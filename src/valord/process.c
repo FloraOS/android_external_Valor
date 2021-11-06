@@ -68,6 +68,7 @@ proccess_array_t* get_processes(void){
     current_process.pid = atoi(_dirent->d_name);
     current_process.proc_path = _make_proc_path(_dirent->d_name);
     _set_checksum(&current_process);
+    processes = _add_process_to_array(processes, current_process);
   }
   
   return processes;

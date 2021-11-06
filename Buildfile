@@ -3,7 +3,7 @@ target_valord(){
   require_command gcc
   require_directory bin
   change_dir src/valord
-  exec "gcc -O3 -Wall -Wpedantic -llog */*.c *.c -o../../bin/valord"
+  exec "gcc -Wall -Wpedantic -llog */*.c *.c -o../../bin/valord"
   leave_dir
   success "Succesfully built valord."
 }

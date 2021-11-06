@@ -7,6 +7,8 @@
 
 #include "../checksum.h"
 
+typedef uint32_t db_size_t;
+
 typedef struct{
   uint32_t id;
   checksum_t checksum;
@@ -18,13 +20,13 @@ typedef struct{
 typedef struct{
   db_entry_t* entries;
   uint32_t* chksum_to_entry;
-  size_t index_size;
+  db_size_t index_size;
   char** names;
-  size_t max_size;
-  size_t size;
+  db_size_t max_size;
+  db_size_t size;
 } database;
 
-database* db_init(size_t max_size);
+database* db_init(db_size_t max_size);
 void db_add_entry(database* db, checksum_t checksum, char* name);
 db_entry_t* db_get_entry(database* db, checksum_t chksum);
 void db_save(database* db, FILE* file);

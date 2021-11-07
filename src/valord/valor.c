@@ -15,7 +15,11 @@ int main(void){
   __android_log_print(ANDROID_LOG_INFO, MODNAME, "starting up...");
   database* db = db_init(DB_SIZE);
   FILE* file = fopen(DB_FILE, "r");
-  cerror("fopen");
+  if(!file){
+     cerror("fopen");
+     __android_log_print(ANDROID_LOG_FATAL, MODNAME, "Failed to open %s for reading!", DB_FILE);
+     return -1;
+  }
   db_read(db, file);
   fclose(file);
   __android_log_print(ANDROID_LOG_INFO, MODNAME, "loaded database from %s", DB_FILE);

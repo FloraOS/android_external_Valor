@@ -1,10 +1,14 @@
 #ifndef CHECKSUM_H
 #define CHECKSUM_H
 #include <stdio.h>
+#include <stdint.h>
 
-typedef unsigned long checksum_t;
+#define CHECKSUM_RETURN_TYPE uint32_t
+#define CHECKSUM_FUNCTION crc32
 
-int checksum_buffer(char* buf, size_t bufsize);
-int checksum_file(FILE* file, checksum_t* checksum);
+typedef uint32_t checksum_t;
+
+void checksum_buffer(char* buf, size_t bufsize, checksum_t* checksum);
+void checksum_file(FILE* file, checksum_t* checksum);
 
 #endif

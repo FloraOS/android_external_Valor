@@ -6,5 +6,6 @@
 #define HASHTBL_CAPACITY 256 //Default hashtable capacity
 #define ARRAY_CPACITY    1   //Default array capacity
 #define DEBUG 1
+#define CHECKSUM_BUFSIZE 8192
 
 #endif

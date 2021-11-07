@@ -52,7 +52,7 @@ int main(int argc, const char* argv[]){
 
 #if DEBUG
   size_t i;
-  for(;i < db->size; ++i){
+  for(i=0;i < db->size; ++i){
     printf("db->names[%d]=%s\n", i, db->names[i]);
   }
 #endif

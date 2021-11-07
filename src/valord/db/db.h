@@ -9,13 +9,19 @@
 
 typedef uint32_t db_size_t;
 
+_Static_assert(sizeof(bool) == 1, "Wrong sizeof(bool)");
+_Static_assert(sizeof(uint32_t) == 4, "Wrong sizeof(uint32_t)");
+_Static_assert(sizeof(checksum_t) == 4, "Wrong sizeof(checksum_t)");
+_Static_assert(sizeof(char) == 1, "Wrong sizeof(char)");
+
 typedef struct{
   uint32_t id;
   checksum_t checksum;
   uint32_t key;
-  bool is_terminal;
+  uint32_t is_terminal;
   uint32_t next_node;
 } db_entry_t;
+
 
 typedef struct{
   db_entry_t* entries;

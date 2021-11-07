@@ -1,11 +1,3 @@
-//
-//  message.c
-//  ddos-2
-//
-//  Created by Andre Zay on 08/07/2019.
-//  Copyright © 2019 Andre Zay. All rights reserved.
-//
-
 #include "message.h"
 
 uint8_t log_level=0b1111111;

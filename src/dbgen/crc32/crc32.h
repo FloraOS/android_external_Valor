@@ -1,11 +1,14 @@
-#ifndef CRC32_H_
-#define CRC32_H_
+#ifndef _CRC_CRC32_H
+#define _CRC_CRC32_H
 
-# include <stdio.h>
-# include <stdlib.h>
+#include <stdint.h>
+#ifdef __cplusplus
+extern "C" {
+#endif /* __cplusplus  */
 
-# define CRC_BUFFER_SIZE  8192
+uint32_t crc32(const char* s, int len, uint32_t crc32_initial);
 
-int Crc32_ComputeFile(FILE *file, unsigned long *outCrc32);
-
+#ifdef __cplusplus
+}
+#endif /* __cplusplus  */
 #endif

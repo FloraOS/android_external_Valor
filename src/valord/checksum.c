@@ -15,10 +15,12 @@ int checksum_buffer(char* buf, size_t bufsize){
     // Stub in case if there would be need
     // to calculate buffers checksums.
     errno = 45; //ENOTSUP
+    buf++;
+    bufsize++; //Stub for AOSP's build system -Werror flag
     return 0;
 }
 
 int checksum_file(FILE* file, checksum_t* checksum){
-  _Static_assert(sizeof(checksum_t) == sizeof(uint32_t), "Wrong declaration of checksum_t!");
+  _Static_assert(sizeof(checksum_t) == sizeof(unsigned long), "Wrong declaration of checksum_t!");
   return Crc32_ComputeFile(file, checksum);
 }

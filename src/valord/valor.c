@@ -4,6 +4,11 @@
 
 #include "db/db.h"
 
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <errno.h>
+
 #include <android/log.h>
 
 int main(void){
@@ -12,10 +17,10 @@ int main(void){
   FILE* file = fopen(DB_FILE, "r");
   cerror("fopen");
   db_read(db, file);
+  fclose(file);
   __android_log_print(ANDROID_LOG_INFO, MODNAME, "loaded database from %s", DB_FILE);
   
   size_t i;
-  checksum_t chksum;
 
   for(;;){
     proccess_array_t* processes = get_processes();
@@ -23,7 +28,9 @@ int main(void){
       db_entry_t* entry = db_get_entry(db, processes->processes[i].checksum);
       if(entry){
         __android_log_print(ANDROID_LOG_WARN, MODNAME, "detected threat %s, killing immediatly", db->names[entry->id]);
-        kill(processes->processes[i].pid, SIGKILL);
+        if(kill(processes->processes[i].pid, SIGKILL)){
+		__android_log_print(ANDROID_LOG_ERROR, MODNAME, "Failed to kill %d: kill: %s(%d)", processes->processes[i].pid, strerror(errno), errno);
+	}
       }
     }
     sleep(IDLE_TIME);

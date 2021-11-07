@@ -9,8 +9,8 @@
 
 list_files() {
 cat <<EOF
-xbin/valord
-etc/init/valordd.rc
+bin/valord
+etc/init/valord.rc
 EOF
 }
 

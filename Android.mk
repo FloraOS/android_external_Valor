@@ -23,7 +23,8 @@ LOCAL_SRC_FILES := \
 	src/valord/aassert.c \
 	src/valord/valor.c \
 	src/valord/db/db.c \
-	src/valord/crc32/crc32.c
+	src/valord/crc32/crc32.c \
+	src/valord/crc32/crc_poly.c
 
 LOCAL_C_INCLUDES := \
 	$(LOCAL_PATH)

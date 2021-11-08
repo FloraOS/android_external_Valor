@@ -1,0 +1,5 @@
+info "Adding valord SEPolicy to system private policies"
+info $LOCAL_PATH
+exec "cp $LOCAL_PATH/policies/sepolicy/private/* $BASEDIR/system/sepolicy/private/"
+success "Succesfully added SEPolicy to system private policies"
+

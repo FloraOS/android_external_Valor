@@ -4,6 +4,7 @@ service valord /system/bin/valord
     group system
     disabled
     oneshot
+    seclabel u:r:valord:s0
 
 on property:sys.boot_completed=1
     start valord

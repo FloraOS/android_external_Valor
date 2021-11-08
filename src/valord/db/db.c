@@ -138,7 +138,7 @@ void db_write_index(database* db, FILE* file){
 
 void db_read_index(database* db, FILE* file){
   fread(&db->index_size, sizeof(db_size_t), 1, file);
-  printf("Reading index: size=%d, bytes=%d\n", db->index_size, sizeof(db_size_t));
+//  printf("Reading index: size=%d, bytes=%d\n", db->index_size, sizeof(db_size_t));
   db->chksum_to_entry = (uint32_t*)malloc(db->index_size*sizeof(uint32_t));
 //  debug("Allocated chksum_to_entry");
   fread(db->chksum_to_entry, sizeof(uint32_t), db->index_size, file);

@@ -23,7 +23,7 @@ proccess_array_t* _add_process_to_array(proccess_array_t* array, process_t proce
 }
 
 char* _make_proc_path(char* dirname){
-  char* path = malloc((7 + strlen(dirname))*sizeof(char));
+  char* path = (char*)malloc((7 + strlen(dirname))*sizeof(char));
   strcpy(path, "/proc/");
   strcat(path, dirname);
   return path;
@@ -31,11 +31,12 @@ char* _make_proc_path(char* dirname){
 
 void _set_checksum(process_t* process){
   aassert(process);
-  char* exe_path = malloc((5 + sizeof(process->proc_path))*sizeof(char));
+  char* exe_path = (char*)malloc((5 + strlen(process->proc_path))*sizeof(char));
   strcpy(exe_path, process->proc_path);
   strcat(exe_path, "/exe");
   FILE* exe = fopen(exe_path, "r");
   if(!exe){
+    free(exe_path);    
     return ;
   }
   checksum_file(exe, &process->checksum);

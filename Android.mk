@@ -1,10 +1,16 @@
 LOCAL_PATH := $(call my-dir)
 
 ifndef BOARD_SEPOLICY_DIRS
+	$(error "Undefined BOARD_SEPOLICY_DIRS")
+endif
+
+BOARD_SEPOLICY_DIRS += $(LOCAL_PATH)/sepolicy/
+
+ifndef BOARD_VENDOR_SEPOLICY_DIRS
 	$(error "Undefined BOARD_VENDOR_SEPOLICY_DIRS")
 endif
 
-BOARD_SEPOLICY_DIRS += $(LOCAL_PATH)/sepolicy
+BOARD_VENDOR_SEPOLICY_DIRS += $(LOCAL_PATH)/sepolicy/
 
 #ifndef BOARD_SEPOLICY_UNION
 #	$(error "Undefined BOARD_VENDOR_SEPOLICY_UNION")

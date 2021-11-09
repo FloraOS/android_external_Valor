@@ -1,0 +1,2 @@
+/system/bin/valord    u:r:valord:s0
+/system/etc/valor.db  u:r:valord:s0

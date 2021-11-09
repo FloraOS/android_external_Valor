@@ -7,6 +7,7 @@
 #include <sys/types.h>
 #include <unistd.h>
 #include <dirent.h>
+#include <errno.h>
 #include <android/log.h>
 
 #include "aassert.h"
@@ -36,6 +37,9 @@ void _set_checksum(process_t* process){
   strcat(exe_path, "/exe");
   FILE* exe = fopen(exe_path, "r");
   if(!exe){
+#if DEBUG
+    __android_log_print(ANDROID_LOG_DEBUG, MODNAME, "fopen: %s: %s(%d)  [%s:%d]", exe_path, strerror(errno), errno, __FILE__, __LINE__);	  
+#endif
     free(exe_path);    
     return ;
   }

@@ -1,13 +1,12 @@
-type valord, coredomain, domain;
-type valor_db, file_type;
+fuck selinux policies
+
+type valord, domain;
 type valord_exec, exec_type, file_type;
 
 init_daemon_domain(valord)
 domain_auto_trans(init, valord_exec, valord)
 
 allow valord untrusted_app:process sigkill;
-allow valord untrusted_app:file    open;
 allow valord untrusted_app:file    read;
-allow valord valor_db:file         open;
-allow valord valor_db:file         read;
+allow valord valord:file      read;
 

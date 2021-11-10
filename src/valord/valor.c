@@ -28,13 +28,14 @@ int main(void){
 
   for(;;){
     proccess_array_t* processes = get_processes();
-//    __android_log_print(ANDROID_LOG_DEBUG, MODNAME, "Found %d processes", processes->length);
-//    printf("\nAbout to eneter loop\n");
+#if DEBUG
+    __android_log_print(ANDROID_LOG_DEBUG, MODNAME, "Found %zu processes", processes->length);
+#endif
     for(i = 0; i < processes->length; ++i){
-//      printf("Loop: %d\n", i);
       db_entry_t* entry = db_get_entry(db, processes->processes[i].checksum);
-//      printf("Got entry!");
-//      __android_log_print(ANDROID_LOG_DEBUG, MODNAME, "PID=%d, chksum=%d",processes->processes[i].pid, processes->processes[i].checksum);
+#if DEBUG      
+      __android_log_print(ANDROID_LOG_DEBUG, MODNAME, "PID=%d, chksum=%d",processes->processes[i].pid, processes->processes[i].checksum);
+#endif
       if(entry){
         __android_log_print(ANDROID_LOG_WARN, MODNAME, "detected threat %s, killing immediatly", db->names[entry->id]);
         if(kill(processes->processes[i].pid, SIGKILL)){

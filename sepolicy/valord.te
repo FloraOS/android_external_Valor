@@ -5,17 +5,25 @@ type valord_exec, exec_type, file_type;
 init_daemon_domain(valord)
 domain_auto_trans(init, valord_exec, valord)
 
-# FIXME: The valord do not detects proccess when it 
+# NOFIX: The valord do not detects proccess when it 
 # is not given sys_ptrace capability. Since is is
 # in neverallow's we have no way but to rewrite neverallow
 
-neverallow { domain -valord } valord:capability sys_ptrace;
+neverallow {
+  domain
+  -valord
+  -vold
+  userdebug_or_eng(`-llkd')
+  -dumpstate
+  userdebug_or_eng(`-incidentd')
+  -storaged
+  -system_server
+} self:global_capability_class_set sys_ptrace;
 
 allow valord untrusted_app:process    sigkill;
 allow valord untrusted_app:file       open;
 allow valord untrusted_app:file       read;
 allow valord valor_db:file            open;
-allow valord valor_db:file            read;
-allow valord proc:dir                 search;
-allow valord valord:capability        sys_ptrace;
-allow valord untrusted_app:capability sys_ptrace;
+allow valord valor_db:file                      read;
+allow valord proc:dir                           search;
+allow valord valord:global_capability_class_set sys_ptrace;

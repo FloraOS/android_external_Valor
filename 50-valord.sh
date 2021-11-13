@@ -11,6 +11,7 @@ list_files() {
 cat <<EOF
 bin/valord
 etc/init/valord.rc
+etc/valor.db
 EOF
 }
 

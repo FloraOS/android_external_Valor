@@ -30,22 +30,23 @@ char* _make_proc_path(char* dirname){
   return path;
 }
 
-void _set_checksum(process_t* process){
+bool _set_checksum(process_t* process){
   aassert(process);
   char* exe_path = (char*)malloc((5 + strlen(process->proc_path))*sizeof(char));
   strcpy(exe_path, process->proc_path);
   strcat(exe_path, "/exe");
   FILE* exe = fopen(exe_path, "r");
   if(!exe){
-#if DEBUG
-    __android_log_print(ANDROID_LOG_DEBUG, MODNAME, "fopen: %s: %s(%d)  [%s:%d]", exe_path, strerror(errno), errno, __FILE__, __LINE__);	  
-#endif
+//#if DEBUG
+//    __android_log_print(ANDROID_LOG_DEBUG, MODNAME, "fopen: %s: %s(%d)  [%s:%d]", exe_path, strerror(errno), errno, __FILE__, __LINE__);	  
+//#endif
     free(exe_path);    
-    return ;
+    return false;
   }
   checksum_file(exe, &process->checksum);
   fclose(exe);
   free(exe_path);
+  return true;
 }
 
 proccess_array_t* _make_process_array(void){
@@ -72,8 +73,9 @@ proccess_array_t* get_processes(void){
     }
     current_process.pid = atoi(_dirent->d_name);
     current_process.proc_path = _make_proc_path(_dirent->d_name);
-    _set_checksum(&current_process);
-    processes = _add_process_to_array(processes, current_process);
+    if(_set_checksum(&current_process)){
+   	 processes = _add_process_to_array(processes, current_process);
+    }
   }
   
   return processes;

@@ -21,6 +21,7 @@ typedef struct {
 
 
 proccess_array_t *get_processes(void);
+void free_process_array(proccess_array_t* array);
 
 #endif
 

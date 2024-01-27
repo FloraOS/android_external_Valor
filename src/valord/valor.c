@@ -46,6 +46,7 @@ int main(void) {
                 }
             }
         }
+        free_process_array(processes);
         sleep(IDLE_TIME);
     }
 }

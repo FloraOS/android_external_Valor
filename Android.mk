@@ -29,6 +29,8 @@ LOCAL_C_INCLUDES := \
 	$(LOCAL_PATH) \
 	$(LOCAL_PATH)/src/valord
 
+LOCAL_SEPOLICY_DIRS := $(LOCAL_PATH)/sepolicy
+
 LOCAL_MODULE := valord
 LOCAL_CFLAGS := -O1 -g -W -Wall # TODO: Pre-release: Change to -O2 -W -Wall
 LOCAL_SHARED_LIBRARIES := liblog

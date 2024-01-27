@@ -26,7 +26,8 @@ LOCAL_SRC_FILES := \
 	src/valord/crc32/crc_poly.c
 
 LOCAL_C_INCLUDES := \
-	$(LOCAL_PATH)
+	$(LOCAL_PATH) \
+	$(LOCAL_PATH)/src/valord
 
 LOCAL_MODULE := valord
 LOCAL_CFLAGS := -O1 -g -W -Wall # TODO: Pre-release: Change to -O2 -W -Wall

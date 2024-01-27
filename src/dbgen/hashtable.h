@@ -30,6 +30,6 @@ void *hashtbl_get(hashtable *tbl, char *key);
 
 bool hashtbl_check_key(hashtable *tbl, char *key);
 
-void hastbl_destroy(hashtable *tbl);
+void hashtbl_destroy(hashtable *tbl);
 
 #endif /* hashtable_h */

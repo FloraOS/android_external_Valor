@@ -1,23 +1,5 @@
 LOCAL_PATH := $(call my-dir)
 
-ifndef BOARD_SEPOLICY_DIRS
-	$(error "Undefined BOARD_SEPOLICY_DIRS")
-endif
-
-BOARD_SEPOLICY_DIRS += $(LOCAL_PATH)/sepolicy/
-
-ifndef BOARD_VENDOR_SEPOLICY_DIRS
-	$(error "Undefined BOARD_VENDOR_SEPOLICY_DIRS")
-endif
-
-BOARD_VENDOR_SEPOLICY_DIRS += $(LOCAL_PATH)/sepolicy/
-
-#ifndef BOARD_SEPOLICY_UNION
-#	$(error "Undefined BOARD_VENDOR_SEPOLICY_UNION")
-#endif
-
-#BOARD_SEPOLICY_UNION += file_contexts
-
 include $(CLEAR_VARS)
 LOCAL_MODULE := valord.rc
 LOCAL_MODULE_CLASS := ETC

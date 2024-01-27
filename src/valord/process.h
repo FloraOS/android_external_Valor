@@ -9,18 +9,18 @@
 #include "checksum.h"
 
 typedef struct {
-  pid_t pid;
-  char* proc_path;
-  checksum_t checksum;
+    pid_t pid;
+    char *proc_path;
+    checksum_t checksum;
 } process_t;
 
 typedef struct {
-  size_t length;
-  process_t* processes;
+    size_t length;
+    process_t *processes;
 } proccess_array_t;
 
 
-proccess_array_t* get_processes(void);
+proccess_array_t *get_processes(void);
 
 #endif
 

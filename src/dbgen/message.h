@@ -59,17 +59,25 @@ va_end(args)
 
 extern uint8_t log_level;
 
-void debug_warn(const char* format, ...);
-void debug(const char* format, ...);
-void info(const char* format, ...);
-void warn(const char* format, ...);
-void error(const char* format, ...);
-void success(const char* format, ...);
-void die(const char* format, ...);
+void debug_warn(const char *format, ...);
+
+void debug(const char *format, ...);
+
+void info(const char *format, ...);
+
+void warn(const char *format, ...);
+
+void error(const char *format, ...);
+
+void success(const char *format, ...);
+
+void die(const char *format, ...);
 
 
 void set_loglevel(uint8_t _log_level);
+
 void add_loglevel(uint8_t _log_level);
+
 void remove_loglevel(uint8_t _log_level);
 
 #endif /* message_h */

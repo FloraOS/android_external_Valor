@@ -8,13 +8,13 @@
 
 //string hashtable implementation
 
-typedef struct __hashtable_node{
-    char* key;
-    void* value;
-    struct __hashtable_node* next;
+typedef struct __hashtable_node {
+    char *key;
+    void *value;
+    struct __hashtable_node *next;
 } _hashtable_node;
 
-typedef struct{
+typedef struct {
     size_t sz;
     size_t capacity;
     _hashtable_node **base;
@@ -23,9 +23,13 @@ typedef struct{
 } hashtable;
 
 hashtable *hashtbl_create(size_t capacity);
+
 void hashtbl_add(hashtable *tbl, char *key, void *data);
+
 void *hashtbl_get(hashtable *tbl, char *key);
-bool hashtbl_check_key(hashtable *tbl,char *key);
+
+bool hashtbl_check_key(hashtable *tbl, char *key);
+
 void hastbl_destroy(hashtable *tbl);
 
 #endif /* hashtable_h */

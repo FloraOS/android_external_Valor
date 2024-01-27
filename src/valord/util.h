@@ -3,6 +3,6 @@
 
 #include <stdbool.h>
 
-bool is_int(char* str);
+bool is_int(char *str);
 
 #endif

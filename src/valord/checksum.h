@@ -1,5 +1,6 @@
 #ifndef CHECKSUM_H
 #define CHECKSUM_H
+
 #include <stdio.h>
 #include <stdint.h>
 
@@ -8,7 +9,8 @@
 
 typedef uint32_t checksum_t;
 
-void checksum_buffer(char* buf, size_t bufsize, checksum_t* checksum);
-void checksum_file(FILE* file, checksum_t* checksum);
+void checksum_buffer(char *buf, size_t bufsize, checksum_t *checksum);
+
+void checksum_file(FILE *file, checksum_t *checksum);
 
 #endif

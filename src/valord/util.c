@@ -6,13 +6,13 @@
 #include <string.h>
 
 
-bool is_int(char* str){
-  size_t i;
-  for(i = 0; i < strlen(str); ++i){
-    if(!isdigit(str[i])){
-      return false;
+bool is_int(char *str) {
+    size_t i;
+    for (i = 0; i < strlen(str); ++i) {
+        if (!isdigit(str[i])) {
+            return false;
+        }
     }
-  }
-  return true;
+    return true;
 }
 

@@ -8,6 +8,7 @@
 #include <unistd.h>
 #include <dirent.h>
 #include <errno.h>
+
 #include <android/log.h>
 
 #include "aassert.h"

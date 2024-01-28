@@ -1,11 +1,3 @@
-//
-//  array.c
-//  ddos2
-//
-//  Created by Andre Zay on 08/07/2019.
-//  Copyright © 2019 Andre Zay. All rights reserved.
-//
-
 #include "array.h"
 
 #include "message.h" //For debug

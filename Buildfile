@@ -28,7 +28,8 @@ target_install(){
   exec adb push valord-custom.rc /system/etc/init/valord.rc
   exec adb push 50-valord.sh /system/addon.d/
   exec adb shell chmod 755 /system/addon.d/50-valord.sh
-  success "Succesfully installed novedningd to the device."
+  success "Succesfully installed valord to the device."
+  success "Please copy now valor.db to /system/etc/"
 }
 
 target_all(){

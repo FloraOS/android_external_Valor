@@ -1,5 +1,5 @@
 service valord /system/bin/valord
-    class main
+    class core
     user root
     group root system
     disabled

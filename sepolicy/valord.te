@@ -1,70 +1,9 @@
 type valord, domain;
-type valor_db, file_type, system_file_type;
+type valor_db, file_type, system_file_type, data_file_type;
 type valord_exec, exec_type, file_type, system_file_type;
-
-typeattribute valord app_monitor;
 
 init_daemon_domain(valord)
 domain_auto_trans(init, valord_exec, valord)
-r_dir_file(valord, proc)
 
-allow valord appdomain:process               sigkill;
-allow valord appdomain:file                  open;
-allow valord appdomain:file                  getattr;
-allow valord appdomain:file                  read;
-allow valord appdomain:dir                   open;
-allow valord appdomain:dir                   getattr;
-allow valord appdomain:dir                   search;
-allow valord valor_db:file                   open;
-allow valord valor_db:file                   read;
-allow valord valor_db:file                   getattr;
-allow valord proc:dir                        open;
-allow valord proc:dir                        getattr;
-allow valord proc:dir                        search;
-allow valord self:global_capability_class_set                sys_ptrace;
-allow valord domain:process                  getattr;
-allow valord kernel:file                     read;
-allow valord init:file                       read;
-allow valord kernel:dir                      search;
-allow valord kernel:lnk_file                 read;
-allow valord init:dir                        open;
-allow valord init:dir                        search;
-allow valord init:dir                        getattr;
-allow valord init:file                       open;
-allow valord init:file                       read;
-allow valord init:file                       getattr;
-allow valord init:lnk_file                   read;
-allow valord init_exec:file                  read;
-allow valord domain:dir                      open;
-allow valord domain:dir                      search;
-allow valord domain:dir                      r_dir_perms;
-allow valord domain:file                     r_file_perms;
-allow valord domain:lnk_file                 read;
-allow valord domain:lnk_file                 r_file_perms;
-allow valord untrusted_app:dir               r_dir_perms;
-allow valord untrusted_app:dir               open;
-allow valord untrusted_app:dir               search;
-allow valord untrusted_app:dir               getattr;
-allow valord untrusted_app:dir               r_dir_perms;
-allow valord untrusted_app:file              open;
-allow valord untrusted_app:file              read;
-allow valord untrusted_app:file              r_file_perms;
-allow valord untrusted_app:process           getattr;
-allow valord untrusted_app:lnk_file          read;
-allow valord untrusted_app:lnk_file          open;
-allow valord untrusted_app:lnk_file          r_file_perms;
-allow valord untrusted_app:lnk_file          getattr;
-allow valord self:global_capability_class_set                 dac_override;
-allow valord self:global_capability_class_set                 dac_read_search;
-allow valord app_data_file:file              open;
-allow valord app_data_file:file              read;
-allow valord app_data_file:file              getattr;
-allow valord app_data_file:dir               open;
-allow valord app_data_file:dir               getattr;
-allow valord app_data_file:dir               search;
-allow valord untrusted_app_27:dir            open;
-allow valord untrusted_app_27:dir            search;
-allow valord untrusted_app_27:dir            getattr;
-allow valord untrusted_app_27:file           open;
-allow valord untrusted_app_27:file           read;
-allow valord untrusted_app_27:file           getattr;
+allow valord self:file { open read getattr };
+allow valord untrusted_app:process { sigkill };

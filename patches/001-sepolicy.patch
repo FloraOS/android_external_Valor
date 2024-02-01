@@ -1,0 +1,60 @@
+diff --git a/private/domain.te b/private/domain.te
+index bcb9d52..cd70ecb 100644
+--- a/private/domain.te
++++ b/private/domain.te
+@@ -147,6 +147,7 @@ neverallow {
+   userdebug_or_eng(`-simpleperf_boot')
+   -storaged
+   -system_server
++  -valord
+ } self:global_capability_class_set sys_ptrace;
+
+ # Limit ability to generate hardware unique device ID attestations to priv_apps
+@@ -208,6 +209,7 @@ neverallow {
+   -appdomain
+   -app_zygote
+   -installd
++  -valord
+   -iorap_prefetcherd
+   -rs # spawned by appdomain, so carryover the exception above
+ } { privapp_data_file app_data_file }:file_class_set open;
+@@ -388,6 +390,7 @@ define(`dac_override_allowed', `{
+   vendor_init
+   vold
+   vold_prepare_subdirs
++  valord
+   zygote
+ }')
+ neverallow ~dac_override_allowed self:global_capability_class_set dac_override;
+@@ -624,6 +627,7 @@ neverallow {
+   -system_server #populate com.android.providers.settings/databases/settings.db.
+   -installd # creation of app sandbox
+   -iorap_inode2filename
++  -valord
+   -traced_probes # resolve inodes for i/o tracing.
+                  # only needs open and read, the rest is neverallow in
+                  # traced_probes.te.
+diff --git a/private/file_contexts b/private/file_contexts
+index 65baa5d..75894b9 100644
+--- a/private/file_contexts
++++ b/private/file_contexts
+@@ -383,6 +383,7 @@
+ /system/bin/cardisplayproxyd     u:object_r:automotive_display_service_exec:s0
+ /system/bin/evsmanagerd          u:object_r:evsmanagerd_exec:s0
+ /system/bin/android\.automotive\.evs\.manager@1\.[0-9]+ u:object_r:evsmanagerd_exec:s0
++/system/bin/valord               u:object_r:valord_exec:s0
+
+ #############################
+ # Vendor files
+diff --git a/private/mlstrustedsubject.te b/private/mlstrustedsubject.te
+index 32079bb..0c52437 100644
+--- a/private/mlstrustedsubject.te
++++ b/private/mlstrustedsubject.te
+@@ -10,6 +10,7 @@ neverallow {
+   -iorap_prefetcherd
+   -iorap_inode2filename
+   -mediaprovider_app
++  -valord
+ } { app_data_file privapp_data_file }:file ~{ read write map getattr ioctl lock append };
+
+ neverallow {

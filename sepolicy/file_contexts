@@ -1,2 +1,3 @@
+# Note: this file should be integrated with
 /system/bin/valord    u:object_r:valord_exec:s0
 /system/etc/valor.db  u:object_r:valor_db:s0

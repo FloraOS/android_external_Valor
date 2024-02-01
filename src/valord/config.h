@@ -7,5 +7,5 @@
 #define IDLE_TIME 5
 #define MODNAME "valord"
 #define CHECKSUM_BUFSIZE 8192
-#define DEBUG 1
+#define DEBUG 0
 #endif

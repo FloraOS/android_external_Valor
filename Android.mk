@@ -32,7 +32,7 @@ LOCAL_C_INCLUDES := \
 LOCAL_SEPOLICY_DIRS := $(LOCAL_PATH)/sepolicy
 
 LOCAL_MODULE := valord
-LOCAL_CFLAGS := -O1 -g -W -Wall # TODO: Pre-release: Change to -O2 -W -Wall
+LOCAL_CFLAGS := -O2 -g -W -Wall
 LOCAL_SHARED_LIBRARIES := liblog
 
 LOCAL_REQUIRED_MODULES := \

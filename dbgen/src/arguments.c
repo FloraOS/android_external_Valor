@@ -1,12 +1,15 @@
 #include "arguments.h"
 #include "message.h"
-#include "config.h"
 
 #include <stdlib.h>
 #include <string.h>
 
+#include <valor/config.h>
+
 hashtable *arguments = NULL;
 char *usage = NULL;
+
+
 
 void arguments_begin(void) {
     arguments = hashtbl_create(HASHTBL_CAPACITY);

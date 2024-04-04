@@ -1,5 +1,5 @@
-#ifndef CONFIG_H
-#define CONFIG_H
+#ifndef VALOR_CONFIG_H
+#define VALOR_CONFIG_H
 
 #define DB_MODULO 65535
 #define DB_SIZE 65535

@@ -6,6 +6,7 @@ set(CMAKE_C_STANDARD 11)
 include_directories(src/dbgen)
 include_directories(src/dbgen/crc32)
 include_directories(src/dbgen/db)
+include_directories(src/libvalor/include)
 
 add_executable(Valor
         src/dbgen/crc32/crc32.c

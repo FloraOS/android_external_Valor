@@ -3,4 +3,9 @@ bin/
 *.sw?
 *.db
 .idea*
-cmake*/
+*cmake*/
+*.cmake
+*CMakeCache.txt
+*Makefile
+*CMakeFiles/*
+*.a

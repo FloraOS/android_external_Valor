@@ -1,7 +1,8 @@
 #include "arguments.h"
 #include "message.h"
-#include "config.h"
-#include "db/db.h"
+
+#include <valor/config.h>
+#include <valor/db/db.h>
 
 #include <stdio.h>
 #include <string.h>

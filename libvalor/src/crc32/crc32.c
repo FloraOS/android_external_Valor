@@ -11,7 +11,8 @@
 **    Output for "123456789"     : 0xCBF43926
 */
 #include <stdlib.h>
-#include "crc32.h"
+
+#include <valor/crc32/crc32.h>
 
 static uint32_t crc32_tab[] =
         {

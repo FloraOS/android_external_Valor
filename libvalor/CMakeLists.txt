@@ -1,13 +1,14 @@
 cmake_minimum_required(VERSION 3.29)
 project(libvalor)
 
-add_library(libvalor STATIC
+add_library(valor STATIC
+        src/checksum.c
         src/db/db.c
         src/crc32/crc32.c
         src/crc32/crc_poly.c
 )
 
-target_include_directories(libvalor PUBLIC
+target_include_directories(valor PUBLIC
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
         $<INSTALL_INTERFACE:include>
 )

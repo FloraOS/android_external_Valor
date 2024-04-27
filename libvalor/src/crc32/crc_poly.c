@@ -5,7 +5,7 @@
 **Description: The source file to calc crc poly.
 */
 #include <stdlib.h>
-#include "crc_poly.h"
+#include <valor/crc32/crc32_poly.h>
 
 // LSB-first
 uint8_t crc8_poly_lsb(uint8_t poly, uint8_t value) {

@@ -6,6 +6,4 @@
 #include <assert.h>
 
 #include <valor/db/db.h>
-#include <valor/config.h>
-#include <valor/checksum.h>
-
+#include <valor/hashset.h>

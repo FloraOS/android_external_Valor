@@ -27,7 +27,7 @@ typedef struct {
 
 typedef struct {
     db_size_t modulo;
-    hashtable_t* name_table;
+    stringset_t* name_set;
     hashset_t* chunk_set;
 } database_t;
 #endif 

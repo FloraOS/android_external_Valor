@@ -1,3 +1,4 @@
+# Arm64 library binding for libvalor
 set(ANDROID_NATIVE_API_LEVEL 26)
 set(ANDROID_ABI "arm64-v8a")
 include(${ANDROID_NDK}/build/cmake/android.toolchain.cmake)

@@ -21,13 +21,13 @@ unsigned long _hash(unsigned char *str, size_t mod) { //wrapper
     return __hash(str) % mod;
 }
 
-void _hashtbl_register(hashtable_t *tbl, _hashtable_node *node) {
+void _hashtbl_register(hashtable_t *tbl, hashtable_node *node) {
     array_add(tbl->keys, node->key);//add key to keys storage
     array_add(tbl->values, node->value);//add value to values storage
 }
 
-_hashtable_node *create_node(char *_key, void *_data) {
-    _hashtable_node *node = malloc(sizeof(_hashtable_node));
+hashtable_node *create_node(char *_key, void *_data) {
+    hashtable_node *node = (hashtable_node *) malloc(sizeof(hashtable_node));
     node->next = NULL;
     node->value = _data;
     node->key = (char *) malloc(sizeof(char) * strlen(_key) + sizeof(char));
@@ -40,20 +40,20 @@ hashtable_t *hashtbl_create(size_t capacity) {
     hashtable_t *_tbl = (hashtable_t *) malloc(sizeof(hashtable_t));
     _tbl->capacity = capacity;
     _tbl->sz = 0;
-    _tbl->base = (_hashtable_node **) malloc(sizeof(_hashtable_node *) * capacity);
+    _tbl->base = (hashtable_node **) malloc(sizeof(hashtable_node * ) * capacity);
     _tbl->keys = array_create(1);
     _tbl->values = array_create(1);
-    bzero(_tbl->base, capacity * sizeof(_hashtable_node *));
+    bzero(_tbl->base, capacity * sizeof(hashtable_node *));
     return _tbl;
 }
 
 void hashtbl_add(hashtable_t *tbl, char *key, void *data) {
     unsigned long hash = _hash((unsigned char *) key, tbl->capacity);
-    _hashtable_node *node = create_node(key, data);
+    hashtable_node *node = create_node(key, data);
     if (tbl->base[hash] == NULL) { //If we have not used this hash
         tbl->base[hash] = node; //add node directly.
     } else {
-        _hashtable_node *iterator = tbl->base[hash]; //We used this hash so we need to attach node to last node asscoiated with this hash.
+        hashtable_node *iterator = tbl->base[hash]; //We used this hash so we need to attach node to last node asscoiated with this hash.
         while (iterator->next != NULL) {
             iterator = iterator->next;
         }
@@ -68,7 +68,7 @@ void *hashtbl_get(hashtable_t *tbl, char *key) {
     if (tbl->base[hash] == NULL) {
         return false;
     } else {
-        _hashtable_node *iterator = tbl->base[hash];
+        hashtable_node *iterator = tbl->base[hash];
         while (iterator) {
             if (!strcmp(iterator->key, key)) {
                 return iterator->value;
@@ -85,7 +85,7 @@ bool hashtbl_check_key(hashtable_t *tbl, char *key) {
     if (tbl->base[hash] == NULL) {
         return false;
     } else {
-        _hashtable_node *iterator = tbl->base[hash];
+        hashtable_node *iterator = tbl->base[hash];
         while (iterator) {
             if (!strcmp(iterator->key, key)) {
                 return true;
@@ -99,8 +99,8 @@ bool hashtbl_check_key(hashtable_t *tbl, char *key) {
 void hashtbl_destroy(hashtable_t *tbl) {
     assert(tbl != NULL);
     int i = 0;
-    _hashtable_node *iterator = NULL;
-    _hashtable_node *next = NULL;
+    hashtable_node *iterator = NULL;
+    hashtable_node *next = NULL;
 
     for (; i < tbl->capacity; ++i) {
         iterator = tbl->base[i];

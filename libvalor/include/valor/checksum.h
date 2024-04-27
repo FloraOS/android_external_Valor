@@ -4,14 +4,12 @@
 #include <stdio.h>
 #include <stdint.h>
 
-#define CHECKSUM_RETURN_TYPE uint32_t
+#include <valor/array.h>
+#include <valor/crc32/crc32.h>
 #define CHECKSUM_FUNCTION crc32
 
 typedef uint32_t checksum_t;
-
-void checksum_buffer(char *buf, size_t bufsize, checksum_t *checksum);
-
-void checksum_file(FILE *file, checksum_t *checksum);
+array_t* calculate_checksum_chunks(FILE *file, size_t chunk_size);
 
 
 #endif

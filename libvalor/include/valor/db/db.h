@@ -18,16 +18,12 @@ _Static_assert(sizeof(checksum_t) == 4, "Wrong sizeof(checksum_t)");
 _Static_assert(sizeof(char) == 1, "Wrong sizeof(char)");
 
 typedef struct {
-    checksum_t checksum;
-} threat_chunk_t;
-
-typedef struct {
-    char* threat_name;
-} threat_name_t;
-
-typedef struct {
     db_size_t modulo;
+    db_size_t chunk_size;
     stringset_t* name_set;
     hashset_t* chunk_set;
+    array_t* names;
+    array_t* chunks;
+    uint32_t version;
 } database_t;
 #endif 

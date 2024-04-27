@@ -25,6 +25,7 @@ hashnode_t* make_hashnode(uint32_t hash){
 hashset_t* create_hashset(uint32_t capacity){
     uint32_t i;
     hashset_t* new = (hashset_t*) malloc(sizeof(hashset_t));
+    new->size = 0;
     new->capacity = capacity;
     new->node_table = (hashnode_t **) malloc(capacity * sizeof(hashnode_t *));
     for(i = 0; i < capacity; ++i){
@@ -64,6 +65,7 @@ void hashset_add(hashset_t* set, uint32_t hash){
     } else {
         last_node->next = new_node;
     }
+    set->size++;
 }
 
 bool hashset_check(hashset_t* set, uint32_t hash){
@@ -88,6 +90,7 @@ stringset_node_t* make_stringnode(const char* str){
 stringset_t* create_stringset(uint32_t capacity){
     uint32_t i;
     stringset_t * new = (stringset_t *) malloc(sizeof(stringset_t));
+    new->size = 0;
     new->capacity = capacity;
     new->node_table = (stringset_node_t **) malloc(capacity * sizeof(stringset_node_t *));
     for(i = 0; i < capacity; ++i){
@@ -115,6 +118,7 @@ void stringset_add(stringset_t* set, const char* str){
     } else {
         last_node->next = new_node;
     }
+    set->size++;
 }
 
 bool stringset_check(stringset_t* set, const char* str){

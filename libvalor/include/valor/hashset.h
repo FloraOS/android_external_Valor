@@ -13,6 +13,7 @@ typedef struct hashnode_t{
 typedef struct hashset_t{
     hashnode_t** node_table;
     uint32_t capacity;
+    uint32_t size;
 } hashset_t;
 
 typedef struct stringset_node_t{
@@ -24,6 +25,7 @@ typedef struct stringset_node_t{
 typedef struct stringset_t{
     stringset_node_t** node_table;
     uint32_t capacity;
+    uint32_t size;
 } stringset_t;
 
 hashset_t* create_hashset(uint32_t capacity);

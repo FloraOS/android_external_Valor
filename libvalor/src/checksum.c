@@ -1,51 +1,37 @@
 #include <valor/checksum.h>
-
-#include <errno.h>
-#include <sys/types.h>
-#include <unistd.h>
-#include <stdio.h>
-#include <string.h>
+#include <valor/array.h>
 #include <stdlib.h>
 
-#include <valor/config.h>
-#include <valor/crc32/crc32.h>
-
-
-//This file is middleware between *some*
-//checksum alogrithm and a main part of
-//program
-
-void checksum_buffer(char *buf, size_t bufsize, checksum_t *checksum) {
-    // Stub in case if there would be need
-    // to calculate buffers checksums.
-    errno = 45; //ENOTSUP
-    buf++;
-    bufsize++; //Stub for AOSP's build system -Werror flag
-    checksum = NULL;
-}
-
-void checksum_file(FILE *file, checksum_t *checksum) {
-    _Static_assert(sizeof(checksum_t) == sizeof(CHECKSUM_RETURN_TYPE), "Wrong declaration of checksum_t!");
-
-    checksum_t chksum = 0;
-    char *buffer = (char *) malloc(sizeof(char) * CHECKSUM_BUFSIZE);
-    size_t read_size = -1;
-
-    for (;;) {
-        read_size = fread(buffer, sizeof(char), CHECKSUM_BUFSIZE, file);
-
-        if (!read_size) {
-            if (ferror(file)) {
-                fprintf(stderr, "ferror: %s(%d)\n", strerror(errno), errno);
-                return;
-            }
-            break;
-        }
-
-        chksum = crc32(buffer, read_size, chksum);
+/**
+ * Calculate and print the CRC32 checksums for chunks of a file.
+ * @param file Pointer to FILE opened in binary read mode.
+ * @param chunk_size Size of each chunk to process.
+ */
+array_t* calculate_checksum_chunks(FILE *file, size_t chunk_size) {
+    char *buffer = malloc(chunk_size);
+    if (buffer == NULL) {
+        fprintf(stderr, "Failed to allocate memory for the buffer.\n");
+        return NULL;
     }
 
-    *checksum = chksum;
+    array_t* array = array_create(128);
+
+    uint32_t bytes_read;
+    uint32_t crc;
+
+    while ((bytes_read = fread(buffer, 1, chunk_size, file)) > 0) {
+        crc = CHECKSUM_FUNCTION(buffer, bytes_read, 0);
+        array_add(array, &crc);
+    }
 
     free(buffer);
+
+    if (ferror(file)) {
+        fprintf(stderr, "Error reading the file.\n");
+        array_free(array);
+        return NULL;
+    }
+    return array;
 }
+
+

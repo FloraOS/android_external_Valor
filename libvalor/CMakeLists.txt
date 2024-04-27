@@ -18,6 +18,8 @@ target_include_directories(valor PUBLIC
 )
 
 # Tests
+enable_testing()
+
 add_executable(test_hashset tests/test_hashset.c)
 target_link_libraries(test_hashset valor)
 target_link_libraries(test_hashset ubsan)

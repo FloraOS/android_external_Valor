@@ -111,15 +111,15 @@ void db_write_entries(database *db, FILE *file) {
 void db_read_entry(db_entry_t *entry, FILE *file) {
     printf("---Reading entry---\n");
     fread(&entry->checksum, sizeof(checksum_t), 1, file);
-    printf("Checksum: %ld\n", entry->checksum);
+    printf("Checksum: %u\n", entry->checksum);
     fread(&entry->id, sizeof(uint32_t), 1, file);
-    printf("ID: %ld\n", entry->id);
+    printf("ID: %u\n", entry->id);
     fread(&entry->is_terminal, sizeof(uint32_t), 1, file);
-    printf("Terminal: %ld\n", entry->is_terminal);
+    printf("Terminal: %u\n", entry->is_terminal);
     fread(&entry->key, sizeof(uint32_t), 1, file);
-    printf("Key: %ld\n", entry->key);
+    printf("Key: %u\n", entry->key);
     fread(&entry->next_node, sizeof(uint32_t), 1, file);
-    printf("Next node: %ld\n", entry->next_node);
+    printf("Next node: %u\n", entry->next_node);
 }
 
 void db_read_entries(database *db, FILE *file) {
@@ -137,7 +137,7 @@ void db_write_index(database *db, FILE *file) {
 
 void db_read_index(database *db, FILE *file) {
     fread(&db->index_size, sizeof(db_size_t), 1, file);
-    printf("Reading index: size=%d, bytes=%d\n", db->index_size, sizeof(db_size_t));
+    printf("Reading index: size=%d, bytes=%lu\n", db->index_size, sizeof(db_size_t));
     db->chksum_to_entry = (uint32_t *) malloc(db->index_size * sizeof(uint32_t));
 //  debug("Allocated chksum_to_entry");
     fread(db->chksum_to_entry, sizeof(uint32_t), db->index_size, file);

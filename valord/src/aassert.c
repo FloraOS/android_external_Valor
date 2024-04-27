@@ -1,5 +1,6 @@
 #include "aassert.h"
-#include "config.h"
+
+#include <valor/config.h>
 
 #include <android/log.h>
 #include <stdlib.h>

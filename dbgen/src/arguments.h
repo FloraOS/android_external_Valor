@@ -4,7 +4,7 @@
 #include <stdbool.h>
 #include <stdint.h>
 
-#include "hashtable.h"
+#include <valor/hashtable.h>
 
 #define argint(E) (argvalue)(int64_t)E
 #define argbool(E) (argvalue)(bool)E

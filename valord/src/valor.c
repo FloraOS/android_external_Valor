@@ -1,8 +1,8 @@
 #include "process.h"
-#include "config.h"
 #include "aassert.h"
 
-#include "db/db.h"
+#include <valor/db/db.h>
+#include <valor/config.h>
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -10,6 +10,9 @@
 #include <errno.h>
 
 #include <android/log.h>
+
+#define DB_FILE "/system/etc/valor.db"
+#define IDLE_TIME 3
 
 int main(void) {
     __android_log_print(ANDROID_LOG_INFO, MODNAME, "starting up...");

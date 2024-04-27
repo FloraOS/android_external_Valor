@@ -11,10 +11,11 @@
 
 #include <android/log.h>
 
+#include <valor/config.h>
+#include <valor/checksum.h>
+
 #include "aassert.h"
-#include "checksum.h"
 #include "util.h"
-#include "config.h"
 
 proccess_array_t* _add_process_to_array(proccess_array_t* array, process_t process){
     aassert(array->length >= 0);

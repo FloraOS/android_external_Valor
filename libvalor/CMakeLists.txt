@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.29)
+cmake_minimum_required(VERSION 3.28.1)
 project(libvalor)
 
 add_library(valor STATIC
@@ -6,6 +6,8 @@ add_library(valor STATIC
         src/db/db.c
         src/crc32/crc32.c
         src/crc32/crc_poly.c
+        src/array.c
+        src/hashtable.c
 )
 
 target_include_directories(valor PUBLIC

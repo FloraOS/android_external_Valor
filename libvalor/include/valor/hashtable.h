@@ -4,7 +4,7 @@
 #include <sys/types.h>
 #include <stdbool.h>
 
-#include "array.h"
+#include <valor/array.h>
 
 //string hashtable implementation
 

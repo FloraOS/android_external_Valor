@@ -7,5 +7,7 @@
 #define ARRAY_CPACITY    1   //Default array capacity
 #define DEBUG 1
 #define CHECKSUM_BUFSIZE 8192
+#define LIBVALOR_VERSION "1.0.0"
+#define MODNAME "valord"
 
 #endif

@@ -6,7 +6,7 @@
 #include <sys/types.h>
 #include <unistd.h>
 
-#include "checksum.h"
+#include <valor/checksum.h>
 
 typedef struct {
     pid_t pid;

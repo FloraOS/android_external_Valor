@@ -1,14 +1,4 @@
-//
-//  hashtable.c
-//  ddos2
-//
-//  Created by Andre Zay on 08/07/2019.
-//  Copyright © 2019 Andre Zay. All rights reserved.
-#include "hashtable.h"
-
-#include "array.h"
-//For debug
-#include "message.h"
+#include <valor/hashtable.h>
 
 #include <stdlib.h>
 #include <string.h>

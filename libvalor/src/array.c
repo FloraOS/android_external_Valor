@@ -1,7 +1,4 @@
-#include "array.h"
-
-#include "message.h" //For debug
-
+#include <valor/array.h>
 
 #include <stdlib.h>
 #include <stdbool.h>

@@ -20,20 +20,20 @@ Here are commits associated with integration of SEPolicy to LineageOS 20.0-based
 * [Patch neverallows](https://github.com/LineageOS/android_system_sepolicy/commit/4543fae09219b0cc092d84faf6fbecabaa2badc2)
 * [Add SEPolicy](https://github.com/LineageOS/android_system_sepolicy/commit/172a314614f59ebe2b47886147ab3b41500ea799)
 
-# Creating database
-The CMakeLists.txt are provided to generate threat database. Currently it is not inteded to be a big one.
-In order to create your database build `dbgen` utility and then use it to create database:
+# Creating database_t
+The CMakeLists.txt are provided to generate threat database_t. Currently it is not inteded to be a big one.
+In order to create your database_t build `dbgen` utility and then use it to create database_t:
 ```bash
 ./dbgen --db valor.db --name mythreat --filename threat-executable-file
 ```
 
 You may continue adding threats with this command. 
 
-## Using database
-By default the database is searched in local directory(see `Android.mk`)
+## Using database_t
+By default the database_t is searched in local directory(see `Android.mk`)
 though you may override `valor.db` module and copy from you own place.
 
 # Future plans
 * New algorithm of hashsum checking
-* By-name process database
+* By-name process database_t
 * Firewall set-up

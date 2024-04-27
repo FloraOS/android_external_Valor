@@ -9,6 +9,7 @@ add_library(valor_arm64-v8a STATIC
         ${LIBVALOR_DIR}/src/crc32/crc_poly.c
         ${LIBVALOR_DIR}/src/array.c
         ${LIBVALOR_DIR}/src/hashtable.c
+        ${LIBVALOR_DIR}/src/hashset.c
 )
 
 target_include_directories(valor_arm64-v8a PUBLIC

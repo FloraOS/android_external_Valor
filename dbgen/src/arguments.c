@@ -6,7 +6,7 @@
 
 #include <valor/config.h>
 
-hashtable *arguments = NULL;
+hashtable_t *arguments = NULL;
 char *usage = NULL;
 
 

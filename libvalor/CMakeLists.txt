@@ -8,6 +8,7 @@ add_library(valor STATIC
         src/crc32/crc_poly.c
         src/array.c
         src/hashtable.c
+        src/hashset.c
 )
 
 target_include_directories(valor PUBLIC

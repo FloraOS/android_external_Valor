@@ -13,11 +13,11 @@
 int main(int argc, const char *argv[]) {
     arguments_begin();
     set_loglevel(LVL_FULL);
-    argument_add_compulsory("--db", "Path to database file", ARG_STR);
+    argument_add_compulsory("--db", "Path to database_t file", ARG_STR);
     argument_add("--checksum", "Threat checksum", ARG_INT, (argvalue) NULL, false, false);
     argument_add_compulsory("--name", "Threat name", ARG_STR);
     argument_add("--filename", "Threat file", ARG_STR, (argvalue) NULL, false, false);
-    argument_add("--check-entry", "Check whether file in database and exit.", ARG_BOOL, argbool(false), false, true);
+    argument_add("--check-entry", "Check whether file in database_t and exit.", ARG_BOOL, argbool(false), false, true);
     argument_add("-h", "Show help", ARG_BOOL, argbool(false), false, true);
 
     arguments_parse(argc, argv, 1);
@@ -31,11 +31,11 @@ int main(int argc, const char *argv[]) {
         die("Arguments --checksum and --filename are incompitiable!");
     }
 
-    database *db = db_init(DB_SIZE);
+    database_t *db = db_init(DB_SIZE);
     FILE *db_file;
     char *db_path = (char *) argument_get("--db")->value.strValue;
     if (access(db_path, F_OK) != -1) {
-        info("Reading database from %s", db_path);
+        info("Reading database_t from %s", db_path);
         db_file = fopen(db_path, "rw");
         if (!db_file) {
             die("fopen: %s(%d)", strerror(errno), errno);
@@ -45,7 +45,7 @@ int main(int argc, const char *argv[]) {
         debug("db->size=%d", db->size);
         debug("db->index_size=%d", db->index_size);
     } else {
-        info("File %s do not exists, so creating new database", db_path);
+        info("File %s do not exists, so creating new database_t", db_path);
         db_file = fopen(db_path, "w");
         if (!db_file) {
             die("fopen: %s(%d)", strerror(errno), errno);
@@ -70,7 +70,7 @@ int main(int argc, const char *argv[]) {
         checksum_t chksum;
         checksum_file(threat, &chksum);
         info("Searching for checksum %ld", chksum);
-        db_entry_t *entry = db_get_entry(db, chksum);
+        db_process_entry_t *entry = db_get_process_entry(db, chksum);
         if (!entry) {
             info("No entry with such checksum");
         } else {
@@ -88,12 +88,12 @@ int main(int argc, const char *argv[]) {
         }
         checksum_t chksum;
         checksum_file(threat, &chksum);
-        db_add_entry(db, chksum, argument_get("--name")->value.strValue);
+        db_add_process_entry(db, chksum, argument_get("--name")->value.strValue);
         fclose(threat);
     }
 
     if (argument_check("--checksum")) {
-        db_add_entry(db, argument_get("--checksum")->value.intValue, argument_get("--name")->value.strValue);
+        db_add_process_entry(db, argument_get("--checksum")->value.intValue, argument_get("--name")->value.strValue);
     }
 
 
@@ -103,7 +103,7 @@ int main(int argc, const char *argv[]) {
     close(open(db_path, O_RDONLY | O_WRONLY | O_TRUNC));
     db_file = fopen(db_path, "w+");
     db_save(db, db_file);
-    success("Succesfully added new entry to database");
+    success("Succesfully added new entry to database_t");
 
     return 0;
 }

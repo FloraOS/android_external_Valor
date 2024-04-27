@@ -21,7 +21,7 @@ unsigned long _hash(unsigned char *str, size_t mod) { //wrapper
     return __hash(str) % mod;
 }
 
-void _hashtbl_register(hashtable *tbl, _hashtable_node *node) {
+void _hashtbl_register(hashtable_t *tbl, _hashtable_node *node) {
     array_add(tbl->keys, node->key);//add key to keys storage
     array_add(tbl->values, node->value);//add value to values storage
 }
@@ -36,8 +36,8 @@ _hashtable_node *create_node(char *_key, void *_data) {
 }
 
 
-hashtable *hashtbl_create(size_t capacity) {
-    hashtable *_tbl = (hashtable *) malloc(sizeof(hashtable));
+hashtable_t *hashtbl_create(size_t capacity) {
+    hashtable_t *_tbl = (hashtable_t *) malloc(sizeof(hashtable_t));
     _tbl->capacity = capacity;
     _tbl->sz = 0;
     _tbl->base = (_hashtable_node **) malloc(sizeof(_hashtable_node *) * capacity);
@@ -47,7 +47,7 @@ hashtable *hashtbl_create(size_t capacity) {
     return _tbl;
 }
 
-void hashtbl_add(hashtable *tbl, char *key, void *data) {
+void hashtbl_add(hashtable_t *tbl, char *key, void *data) {
     unsigned long hash = _hash((unsigned char *) key, tbl->capacity);
     _hashtable_node *node = create_node(key, data);
     if (tbl->base[hash] == NULL) { //If we have not used this hash
@@ -63,7 +63,7 @@ void hashtbl_add(hashtable *tbl, char *key, void *data) {
     tbl->sz += 1;
 }
 
-void *hashtbl_get(hashtable *tbl, char *key) {
+void *hashtbl_get(hashtable_t *tbl, char *key) {
     unsigned long hash = _hash((unsigned char *) key, tbl->capacity);
     if (tbl->base[hash] == NULL) {
         return false;
@@ -80,7 +80,7 @@ void *hashtbl_get(hashtable *tbl, char *key) {
     }
 }
 
-bool hashtbl_check_key(hashtable *tbl, char *key) {
+bool hashtbl_check_key(hashtable_t *tbl, char *key) {
     unsigned long hash = _hash((unsigned char *) key, tbl->capacity);
     if (tbl->base[hash] == NULL) {
         return false;
@@ -96,7 +96,7 @@ bool hashtbl_check_key(hashtable *tbl, char *key) {
     }
 }
 
-void hashtbl_destroy(hashtable *tbl) {
+void hashtbl_destroy(hashtable_t *tbl) {
     assert(tbl != NULL);
     int i = 0;
     _hashtable_node *iterator = NULL;

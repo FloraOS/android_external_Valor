@@ -34,7 +34,7 @@ typedef struct {
     array_t *values;//Implements multiple arguments pushing something to an array
 } argument_t;
 
-extern hashtable *arguments;
+extern hashtable_t *arguments;
 
 void arguments_begin(void);
 

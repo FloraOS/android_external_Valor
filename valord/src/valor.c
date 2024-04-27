@@ -16,7 +16,7 @@
 
 int main(void) {
     __android_log_print(ANDROID_LOG_INFO, MODNAME, "starting up...");
-    database *db = db_init(DB_SIZE);
+    database_t *db = db_init(DB_SIZE);
     FILE *file = fopen(DB_FILE, "r");
     if (!file) {
         cerror("fopen");
@@ -25,7 +25,7 @@ int main(void) {
     }
     db_read(db, file);
     fclose(file);
-    __android_log_print(ANDROID_LOG_INFO, MODNAME, "loaded database from %s", DB_FILE);
+    __android_log_print(ANDROID_LOG_INFO, MODNAME, "loaded database_t from %s", DB_FILE);
 
     size_t i;
 
@@ -35,7 +35,7 @@ int main(void) {
         __android_log_print(ANDROID_LOG_DEBUG, MODNAME, "Found %zu processes", processes->length);
 #endif
         for (i = 0; i < processes->length; ++i) {
-            db_entry_t *entry = db_get_entry(db, processes->processes[i].checksum);
+            db_process_entry_t *entry = db_get_process_entry(db, processes->processes[i].checksum);
 #if DEBUG
             __android_log_print(ANDROID_LOG_DEBUG, MODNAME, "PID=%d, chksum=%d", processes->processes[i].pid,
                                 processes->processes[i].checksum);

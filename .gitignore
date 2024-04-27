@@ -4,7 +4,6 @@ bin/
 *.db
 .idea*
 *cmake*/
-*.cmake
 *CMakeCache.txt
 *Makefile
 *CMakeFiles/*

@@ -11,7 +11,7 @@ typedef struct {
     void **base;
 } array_t;
 
-array_t *array_create(int capacity);
+array_t *array_create(size_t capacity);
 
 void array_add(array_t *_array, void *object);
 

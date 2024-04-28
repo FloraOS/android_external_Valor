@@ -76,3 +76,46 @@ void database_save(FILE* file, database_t* db){
         fwrite(chksum_ptr, sizeof(checksum_t), 1, file);
     }
 }
+
+void database_read(FILE* file, database_t* db){
+    _Static_assert(sizeof(uint32_t) == sizeof(db->name_set->size), "Inconsistent size type for name set");
+    _Static_assert(sizeof(uint32_t) == sizeof(db->chunk_set->size), "Inconsistent size type for chunk set");
+    size_t i = 0;
+    // Read metadata
+    fread(&db->version, sizeof(db->version), 1, file);
+    fread(&db->chunk_size, sizeof(db->chunk_size), 1, file);
+    fread(&db->modulo, sizeof(db->modulo), 1, file);
+    uint32_t names_size;
+    uint32_t chunks_size;
+    fread(&names_size, sizeof(uint32_t), 1, file);
+    fread(&chunks_size, sizeof(uint32_t), 1, file);
+    // Initialize sets
+    db->name_set = create_stringset(names_size);
+    db->chunk_set = create_hashset(chunks_size);
+    db->chunks = array_create(chunks_size);
+    db->names = array_create(names_size);
+    // Read all names
+    uint32_t len = 0;
+    for(; i < names_size; ++i){
+        fread(&len, sizeof(uint32_t), 1, file);
+        char* str = (char*) malloc((len + 1) * sizeof(char));
+        str[len] = (char)0;
+        fread(str, sizeof(char), len, file);
+        database_add_name(db, str);
+    }
+    // Read all chunks
+    array_t* chunks = array_create(chunks_size);
+    checksum_t chksum;
+    for(i = 0; i < chunks_size; ++i){
+        fread(&chksum, sizeof(checksum_t), 1, file);
+        checksum_t* chksum_ptr = (checksum_t*) malloc(sizeof(checksum_t));
+        memcpy(chksum_ptr, &chksum);
+        array_add(chunks, chksum_ptr);
+    }
+    database_add_checksums(db, chunks);
+    // Free temporate variables
+    for(i = 0; i < chunks_size; ++i){
+        free(chunks->base[i]);
+    }
+    array_free(chunks);
+}

@@ -6,7 +6,7 @@
 #include <strings.h>
 #include <assert.h>
 
-array_t *array_create(int capacity) {
+array_t *array_create(size_t capacity) {
     array_t *_array = (array_t *) malloc(sizeof(array_t));
     _array->capacity = capacity;
     _array->sz = 0;

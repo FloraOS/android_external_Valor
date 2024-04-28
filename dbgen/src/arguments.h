@@ -62,4 +62,6 @@ argvalue argument_value_get_s(char *name, argtype type);
 
 void argument_add_array(char *name, char *description, argtype type, bool compulsory);
 
+void arguments_finalize(void);
+
 #endif /* arguments_h */

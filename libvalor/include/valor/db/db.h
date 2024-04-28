@@ -26,4 +26,15 @@ typedef struct {
     array_t* chunks;
     uint32_t version;
 } database_t;
+
+database_t* create_database(db_size_t capacity, db_size_t chunk_size);
+void free_database(database_t* database);
+void database_add_checksums(database_t* db, array_t* checksums);
+bool database_check_chunk(database_t* db, checksum_t chunk_chksum);
+void database_add_name(database_t* db, const char* name);
+bool database_check_name(database_t* db, const char* name);
+void database_save(FILE* file, database_t* db);
+void database_read(FILE* file, database_t* db);
+database_t* database_from_file(FILE* file);
+
 #endif 

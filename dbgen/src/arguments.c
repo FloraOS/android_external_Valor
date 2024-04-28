@@ -215,3 +215,11 @@ argvalue argument_value_get_s(char *name, argtype type) {//Secure version of arg
     }
     return argument->value;
 }
+
+void arguments_finalize(void){
+    size_t i = 0;
+    for(; i < arguments->values->sz; ++i){
+        free(arguments->values->base[i]);
+    }
+    hashtbl_destroy(arguments);
+}

@@ -119,3 +119,9 @@ void database_read(FILE* file, database_t* db){
     }
     array_free(chunks);
 }
+
+database_t* database_from_file(FILE* file){
+    database_t* db = (database_t*) malloc(sizeof(database_t));
+    database_read(file, db);
+    return db;
+}

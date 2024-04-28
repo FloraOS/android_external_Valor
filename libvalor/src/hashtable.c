@@ -116,4 +116,10 @@ void hashtbl_destroy(hashtable_t *tbl) {
             iterator = next;
         }
     }
+    free(tbl->base);
+    array_free(tbl->values);
+    for(i = 0; i < tbl->keys->sz; ++i){
+        free(tbl->keys->base[i]);
+    }
+    free(tbl->keys);
 }

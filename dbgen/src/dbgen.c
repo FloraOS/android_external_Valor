@@ -13,29 +13,17 @@
 int main(int argc, const char *argv[]) {
     arguments_begin();
     set_loglevel(LVL_FULL);
-    argument_add_compulsory("--db", "Path to database_t file", ARG_STR);
-    argument_add("--checksum", "Threat checksum", ARG_INT, (argvalue) NULL, false, false);
-    argument_add_compulsory("--name", "Threat name", ARG_STR);
+    argument_add_compulsory("--db", "Path to database file", ARG_STR);
     argument_add("--filename", "Threat file", ARG_STR, (argvalue) NULL, false, false);
-    argument_add("--check-entry", "Check whether file in database_t and exit.", ARG_BOOL, argbool(false), false, true);
+    argument_add("--check-entry", "Check whether file in database and exit.", ARG_BOOL, argbool(false), false, true);
     argument_add("-h", "Show help", ARG_BOOL, argbool(false), false, true);
 
     arguments_parse(argc, argv, 1);
 
-    if ((!argument_check("--checksum") && !argument_check("--filename")) ||
-        (!argument_check("--name") && !argument_check("--check-entry"))) {
-        die("Not enough arguments. Use %s --help to show usage", argv[0]);
-    }
-
-    if (argument_check("--checksum") && argument_check("--filename")) {
-        die("Arguments --checksum and --filename are incompitiable!");
-    }
-
-    database_t *db = db_init(DB_SIZE);
     FILE *db_file;
     char *db_path = (char *) argument_get("--db")->value.strValue;
     if (access(db_path, F_OK) != -1) {
-        info("Reading database_t from %s", db_path);
+        info("Reading database from %s", db_path);
         db_file = fopen(db_path, "rw");
         if (!db_file) {
             die("fopen: %s(%d)", strerror(errno), errno);
@@ -105,5 +93,6 @@ int main(int argc, const char *argv[]) {
     db_save(db, db_file);
     success("Succesfully added new entry to database_t");
 
+    arguments_finalize();
     return 0;
 }

@@ -15,7 +15,9 @@ add_executable(valord
         src/aassert.c
         src/process.c
         src/util.c
-        src/valor.c)
+        src/valor.c
+        src/log.h
+        src/log.c)
 
 target_link_libraries(valord valor_arm64-v8a)
 target_link_libraries(valord android)

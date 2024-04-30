@@ -54,6 +54,10 @@ void database_add_name(database_t *db, const char *name) {
 }
 
 bool database_check_name(database_t *db, const char *name) {
+    if(name == NULL){
+        fprintf(stderr, "Name passed to database_check_name is NULL!");
+        return false;
+    }
     return stringset_check(db->name_set, name);
 }
 

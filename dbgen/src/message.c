@@ -1,5 +1,13 @@
 #include "message.h"
 
+#include <stdarg.h>
+#include <stdint.h>
+#include <stdbool.h>
+#include <stdlib.h>
+#include <stdio.h>
+#include <errno.h>
+#include <assert.h>
+
 uint8_t log_level = 0b1111111;
 
 void debug(const char *format, ...) {

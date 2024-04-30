@@ -11,7 +11,8 @@
 typedef struct {
     pid_t pid;
     char *proc_path;
-    checksum_t checksum;
+    char *comm;
+    array_t* checksums;
 } process_t;
 
 typedef struct {
@@ -20,7 +21,7 @@ typedef struct {
 } proccess_array_t;
 
 
-proccess_array_t *get_processes(void);
+proccess_array_t *get_processes(uint32_t chunk_size);
 void free_process_array(proccess_array_t* array);
 
 #endif

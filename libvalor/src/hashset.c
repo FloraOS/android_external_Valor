@@ -2,6 +2,7 @@
 
 #include <stdlib.h>
 #include <string.h>
+#include <assert.h>
 
 unsigned long hash_djb2(const unsigned char *str) //djb2 hash by Dan Bernstein
 {
@@ -49,6 +50,7 @@ void destroy_hashset(hashset_t* set){
 }
 
 void hashset_add(hashset_t* set, uint32_t hash){
+    assert(set->capacity > 0);
     uint32_t index = hash % set->capacity;
     hashnode_t *current_node = set->node_table[index];
     hashnode_t *last_node = NULL;
@@ -75,6 +77,7 @@ bool hashset_check(hashset_t* set, uint32_t hash){
         if(current_node->hash == hash){
             return true;
         }
+        current_node = current_node->next;
     }
     return false;
 }
@@ -102,6 +105,7 @@ stringset_t* create_stringset(uint32_t capacity){
 
 void stringset_add(stringset_t* set, const char* str){
     uint32_t hash = hash_djb2((unsigned char*) str);
+    assert(set->capacity > 0);
     uint32_t index = hash % set->capacity;
     stringset_node_t *current_node = set->node_table[index];
     stringset_node_t *last_node = NULL;
@@ -131,6 +135,7 @@ bool stringset_check(stringset_t* set, const char* str){
                 return true;
             }
         }
+        current_node = current_node->next;
     }
     return false;
 }

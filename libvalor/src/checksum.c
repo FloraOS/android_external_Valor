@@ -10,7 +10,7 @@
  * @param chunk_size Size of each chunk to process.
  */
 array_t *calculate_checksum_chunks(FILE *file, size_t chunk_size) {
-    char *buffer = malloc(chunk_size);
+    char *buffer = (char*)malloc(chunk_size);
     if (buffer == NULL) {
         fprintf(stderr, "Failed to allocate memory for the buffer.\n");
         return NULL;
@@ -19,12 +19,13 @@ array_t *calculate_checksum_chunks(FILE *file, size_t chunk_size) {
     array_t *array = array_create(128);
 
     uint32_t bytes_read;
-    uint32_t crc;
+    uint32_t crc = 0;
     size_t i = 0;
 
     while ((bytes_read = fread(buffer, 1, chunk_size, file)) > 0) {
-        if (bytes_read)
+        if (bytes_read > 0) {
             crc = CHECKSUM_FUNCTION(buffer, bytes_read, 0);
+        }
         uint32_t *crc_ptr = (uint32_t *) malloc(sizeof(uint32_t));
         memcpy(crc_ptr, &crc, sizeof(uint32_t));
         array_add(array, crc_ptr);

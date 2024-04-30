@@ -9,7 +9,8 @@
 #define CHECKSUM_FUNCTION crc32
 
 typedef uint32_t checksum_t;
-array_t* calculate_checksum_chunks(FILE *file, size_t chunk_size);
+
+array_t *calculate_checksum_chunks(FILE *file, size_t chunk_size);
 
 
 #endif

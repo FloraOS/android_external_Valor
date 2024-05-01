@@ -15,14 +15,9 @@ typedef struct {
     array_t* checksums;
 } process_t;
 
-typedef struct {
-    size_t length;
-    process_t *processes;
-} proccess_array_t;
 
-
-proccess_array_t *get_processes(uint32_t chunk_size);
-void free_process_array(proccess_array_t* array);
+array_t *get_processes(uint32_t chunk_size);
+void free_process_array(array_t* array);
 
 #endif
 

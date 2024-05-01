@@ -29,6 +29,18 @@ void array_free(array_t *_array) {
     free(_array);
 }
 
+/**
+ * Frees array as well as pointers in its base
+ * @param array pointer to array
+ */
+void array_free_with_base(array_t* array){
+    size_t i = 0;
+    for(; i<array->sz; ++i){
+        free(array->base[i]);
+    }
+    array_free(array);
+}
+
 bool in_array(array_t *_array, void *object) {
     int i = 0;
     for (; i < _array->sz; ++i) {

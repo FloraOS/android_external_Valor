@@ -19,4 +19,10 @@ void array_free(array_t *_array);
 
 bool in_array(array_t *_array, void *object);
 
+/**
+ * Frees array as well as pointers in its base
+ * @param array pointer to array
+ */
+void array_free_with_base(array_t* array);
+
 #endif /* array_h */

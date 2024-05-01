@@ -41,12 +41,9 @@ int main(void) {
     size_t i;
 
     for (;;) {
-        proccess_array_t *processes = get_processes(db->chunk_size);
-#if DEBUG
-        debug("Found %zu processes", processes->length);
-#endif
-        for (i = 0; i < processes->length; ++i) {
-            process_t proc = processes->processes[i];
+        array_t *processes = get_processes(db->chunk_size);
+        for (i = 0; i < processes->sz; ++i) {
+            process_t proc = *(process_t *)processes->base[i];
             if(database_check_name(db, proc.comm)){
                 warn("Detected threat by name %s", proc.comm);
                 kill(proc.pid, 9);

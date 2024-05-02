@@ -24,9 +24,9 @@ jobs:
 
     - name: Download Android NDK
       run: |
-        - cd /opt
-        - wget https://dl.google.com/android/repository/android-ndk-r26d-linux.zip
-        - unzip android-ndk-r26d-linux.zip
+        cd /opt
+        wget https://dl.google.com/android/repository/android-ndk-r26d-linux.zip
+        unzip android-ndk-r26d-linux.zip
 
     - name: Configure CMake
       # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.

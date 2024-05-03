@@ -25,4 +25,4 @@ RUN make
 # Create image with library
 FROM alpine:latest
 COPY --from=builder /opt/libvalor/build/libvalor.a /lib/
-COPY include /usr/include/valor
+COPY include/* /usr/include/valor

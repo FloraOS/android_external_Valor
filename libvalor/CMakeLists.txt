@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.28.1)
+cmake_minimum_required(VERSION 3.27)
 project(libvalor)
 
 # libvalor base
@@ -22,12 +22,10 @@ enable_testing()
 
 add_executable(test_hashset tests/test_hashset.c)
 target_link_libraries(test_hashset valor)
-target_link_libraries(test_hashset ubsan)
 
 add_test(NAME test_hashset COMMAND test_hashset)
 
 add_executable(test_stringset tests/test_stringset.c)
 target_link_libraries(test_stringset valor)
-target_link_libraries(test_stringset ubsan)
 
 add_test(NAME test_stringset COMMAND test_stringset)

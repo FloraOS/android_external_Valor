@@ -33,6 +33,8 @@ int main(int argc, const char *argv[]) {
                  argstr(NULL), false, false);
     argument_add("--check-threat", "Add name of threat for fingerprint checksumming", ARG_STR,
                  argstr(NULL), false, false);
+    argument_add("--set-version", "Set database version", ARG_INT,
+                 argint(0), false, false);
     argument_add("-h", "Show help", ARG_BOOL, argbool(false),
                  false, true);
 
@@ -122,6 +124,20 @@ int main(int argc, const char *argv[]) {
 
     if(argument_get("--increment-version")->value.boolValue){
         ++db->version;
+    }
+
+    if(argument_check("--set-version")){
+        if(argument_check("--increment-version")){
+            warn("Increment version has no effect when --set-version is specified");
+        }
+        int64_t value = argument_get("--set-version")->value.intValue;
+        if(value < 0){
+            die("Bad version value %d", value);
+        }
+        if(value == 0){
+            warn("Version 0 is reserved for empty database");
+        }
+        db->version = value;
     }
 
     close(open(db_path, O_RDONLY | O_WRONLY | O_TRUNC));

@@ -1,0 +1,11 @@
+cc_library {
+    name: "libvalor",
+    srcs: ["src/**/*.c"],
+    local_include_dirs: ["include"],
+
+    target: {
+       host: {
+          enabled: true
+      }
+    }
+}

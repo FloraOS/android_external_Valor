@@ -1,17 +1,15 @@
 cc_binary {
-    "name": "dbgen",
-    "type": "cc_binary",
-    "srcs": [
-        "arguments.c",
-        "dbgen.c",
-        "message.c"
+    name: "dbgen",
+    srcs: [
+        "src/**/*.c"
     ],
-    "local_include_dirs": ["."],
-    "static_libs": ["libvalor"],
-    "cflags": ["-Wall", "-Wextra"],
-    "target": {
-        "host": {
-            "enabled": true
+    local_include_dirs: ["."],
+    include_dirs: ["external/Valor/libvalor/include"],
+    static_libs: ["libvalor"],
+    cflags: ["-Wall", "-Wextra"],
+    target: {
+        host: {
+            enabled: true
         }
     }
 }

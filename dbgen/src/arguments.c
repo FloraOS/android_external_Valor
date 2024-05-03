@@ -10,7 +10,6 @@ hashtable_t *arguments = NULL;
 char *usage = NULL;
 
 
-
 void arguments_begin(void) {
     arguments = hashtbl_create(HASHTBL_CAPACITY);
     argument_add("--help", "Show help message.", ARG_BOOL, argbool(false), false, true);
@@ -36,9 +35,9 @@ void _register_argument(argument_t *argument) {
 }
 
 
-argument_t *
-argument_create(char *name, char *description, argtype type, bool compulsory, argvalue _default, bool has_default_value,
-                bool is_help, bool array) {
+argument_t *argument_create(char *name, char *description, argtype type,
+                            bool compulsory, argvalue _default, bool has_default_value,
+                            bool is_help, bool array) {
     argument_t *argument = (argument_t *) malloc(sizeof(argument_t));
     argument->name = (char *) malloc(sizeof(char) * (strlen(name) + 1));
     argument->description = (char *) malloc(sizeof(char) * (strlen(description) + 1));
@@ -70,16 +69,8 @@ void argument_add_compulsory(char *name, char *description, argtype type) {
     _register_argument(argument);
 }
 
-void
-argument_add(char *name, char *description, argtype type, argvalue _default, bool has_default_value, bool is_help) {
-    /*
-        name – Name of an argument
-        description – description of an argument
-        type – type of an argument.
-        _default – default value
-        has_default_value – set true if _default is not stub
-        is_help – whether argument is used to show help information
-     */
+void argument_add(char *name, char *description, argtype type,
+                  argvalue _default, bool has_default_value, bool is_help) {
     if (_argcheck(name)) {
         die("Programming error: rewriting argument: %s.(%s:%d)", name, __FILE__, __LINE__);
     }
@@ -184,7 +175,8 @@ void arguments_parse(int argc, const char *argv[], int start) {
         return;//We don't need to check anything – there is help arguments
     }
     //Check that all compulsory arguments are set
-    for (i = 0; i < arguments->values->sz; ++i) {
+    size_t j = 0;
+    for (; j < arguments->values->sz; ++j) {
         argument_t *argument = (argument_t *) arguments->values->base[i];
         if ((!argument->is_set) && argument->compulsory) {
             die("Argument %s is required.", argument->name);
@@ -198,7 +190,7 @@ void arguments_help(const char *progname) {
     if (!usage) {
         warn("Programming warning:usage is unset(%s:%d)", __FILE__, __LINE__);
     }
-    int i = 0;
+    size_t i = 0;
     info("Usage: %s %s", progname, usage);
     for (; i < arguments->values->sz; ++i) {
         argument_t *argument = (argument_t *) arguments->values->base[i];
@@ -216,9 +208,9 @@ argvalue argument_value_get_s(char *name, argtype type) {//Secure version of arg
     return argument->value;
 }
 
-void arguments_finalize(void){
+void arguments_finalize(void) {
     size_t i = 0;
-    for(; i < arguments->values->sz; ++i){
+    for (; i < arguments->values->sz; ++i) {
         free(arguments->values->base[i]);
     }
     hashtbl_destroy(arguments);

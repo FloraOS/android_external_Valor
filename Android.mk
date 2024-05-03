@@ -18,4 +18,4 @@ LOCAL_SRC_FILES := $(LOCAL_MODULE)
 include $(BUILD_PREBUILT)
 
 # Include all module makefiles
-include $(call all-makefiles-under,$(call my-dir))
+include $(call all-makefiles-under, $(LOCAL_PATH))

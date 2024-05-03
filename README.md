@@ -4,6 +4,10 @@ files. It may be used for preventing harmful processes from operating
 on Android device.
 
 # Building
+For building either `CMakeLists.txt` should be used or docker. For cmake building case p
+lease note that by default valord target is also 
+included, so you need to have Android NDK installed under `ANDROID_NDK` path for CMakeLists.txt
+(by default set to `/opt/android-ndk`)
 
 # Integration
 As `valord` scans app files it needs extended access to the system which 

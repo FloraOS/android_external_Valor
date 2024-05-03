@@ -26,7 +26,7 @@ jobs:
       run: |
         sudo apt-get update
         sudo apt-get upgrade
-        sudo apt-get install gcc clang wget unzip linux-headers
+        sudo apt-get install gcc clang wget unzip linux-headers-$(uname -r)
 
     - name: Download Android NDK
       run: |

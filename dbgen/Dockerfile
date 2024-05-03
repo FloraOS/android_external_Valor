@@ -15,5 +15,5 @@ WORKDIR /opt/dbgen/build
 RUN cmake .. -DEO_SOURCE_DIR:PATH=/usr/include
 RUN make
 
-
-
+FROM alpine:latest
+COPY --from=builder /opt/dbgen/build/dbgen /usr/bin/dbgen

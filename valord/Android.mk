@@ -1,15 +1,17 @@
+LOCAL_PATH := $(call my-dir)
+
 include $(CLEAR_VARS)
 LOCAL_SRC_FILES := \
-	src/valord/process.c \
-	src/valord/util.c \
-	src/valord/checksum.c \
-	src/valord/aassert.c \
-	src/valord/valor.c \
-	src/valord/log.c
+	src/process.c \
+	src/util.c \
+	src/aassert.c \
+	src/valor.c \
+	src/log.c
 
 LOCAL_C_INCLUDES := \
 	$(LOCAL_PATH) \
-	$(LOCAL_PATH)/src
+	$(LOCAL_PATH)/src \
+	$(LOCAL_PATH)/../libvalor/include
 
 LOCAL_SEPOLICY_DIRS := $(LOCAL_PATH)/sepolicy
 

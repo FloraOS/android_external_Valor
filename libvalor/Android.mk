@@ -2,7 +2,7 @@ LOCAL_PATH := $(call my-dir)
 
 include $(CLEAR_VARS)
 
-LOCAL_MODULE := valor
+LOCAL_MODULE := libvalor
 LOCAL_SRC_FILES := \
     src/checksum.c \
 	src/db/db.c \

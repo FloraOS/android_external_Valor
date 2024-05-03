@@ -1,4 +1,4 @@
-{
+cc_binary {
     "name": "dbgen",
     "type": "cc_binary",
     "srcs": [

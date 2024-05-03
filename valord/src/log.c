@@ -1,5 +1,7 @@
 #include "log.h"
 
+#include "util.h"
+
 #include <stdarg.h>
 
 #include <valor/config.h>
@@ -23,6 +25,8 @@ void debug(const char *format, ...){
     fprintf(stdout, "\n");
 #endif
     va_end(args);
+#else
+    UNUSED(format);
 #endif
 }
 

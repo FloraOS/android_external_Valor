@@ -1,16 +1,9 @@
 # Valor
 Valor is a very simple run-time checker of executable
 files. It may be used for preventing harmful processes from operating
-on Android device. 
- 
-In future it is planned to extend it possibilities also to
-blocking IP addresses with help of modified netd or directly by
-interacting with `iptables`.
+on Android device.
 
-# Installation
-A [build.sh](https://github.com/Andrewerr/build.sh) is a available for installing
-it with help of `adb root`, though it is not recommend as the daemon if over-priviliged 
-then. It is better to integrate the daemon with your custom ROM.
+# Building
 
 # Integration
 As `valord` scans app files it needs extended access to the system which 
@@ -20,20 +13,23 @@ Here are commits associated with integration of SEPolicy to LineageOS 20.0-based
 * [Patch neverallows](https://github.com/LineageOS/android_system_sepolicy/commit/4543fae09219b0cc092d84faf6fbecabaa2badc2)
 * [Add SEPolicy](https://github.com/LineageOS/android_system_sepolicy/commit/172a314614f59ebe2b47886147ab3b41500ea799)
 
-# Creating database_t
-The CMakeLists.txt are provided to generate threat database_t. Currently it is not inteded to be a big one.
-In order to create your database_t build `dbgen` utility and then use it to create database_t:
-```bash
-./dbgen --db valor.db --name mythreat --filename threat-executable-file
-```
+## Makefiles
+To use `Android.mk` files provided you just can add `valord` target to `PRODUCT_PACKGES` like 
+[here](https://github.com/MilkyWayOS/android_vendor_milkyway/blob/1172547a1ad68eff30f5d02626f15abbc2bd4ee3/config/config.mk#L14).
 
-You may continue adding threats with this command. 
+# Database
+The database should be created on the host machine. You may use `dbgen` utility for creating it.
+## Version
+Database has version which is logged during startup of valord. The argument `--increment-version` is used to update 
+version.
+It is reccomended to keep version 0 for empty database which is commonly should be used for debugging.
 
-## Using database_t
-By default the database_t is searched in local directory(see `Android.mk`)
-though you may override `valor.db` module and copy from you own place.
+## Using database
+By default makefiles are setupped to search database in local directory in tree, though if you want provide database
+separately you may override `valor.db` module. 
+The database itself is currently stored under `/system/etc/valor.db`
 
 # Future plans
-* New algorithm of hashsum checking
-* By-name process database_t
-* Firewall set-up
+* Better alogrithms for threat detection
+* Active protection: scan also memory-mapped files
+* Integration with AOSP: dynamic database updates, status response

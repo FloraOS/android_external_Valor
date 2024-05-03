@@ -1,0 +1,17 @@
+{
+    "name": "dbgen",
+    "type": "cc_binary",
+    "srcs": [
+        "arguments.c",
+        "dbgen.c",
+        "message.c"
+    ],
+    "local_include_dirs": ["."],
+    "static_libs": ["libvalor"],
+    "cflags": ["-Wall", "-Wextra"],
+    "target": {
+        "host": {
+            "enabled": true
+        }
+    }
+}

@@ -84,6 +84,13 @@ jobs:
         echo '  make release'
         exit 1
 
+    - name: Download Android NDK
+      run: |
+        cd /opt
+        wget https://dl.google.com/android/repository/android-ndk-r26d-linux.zip
+        unzip android-ndk-r26d-linux.zip
+        mv android-ndk-r26d android-ndk
+
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v3
       with:

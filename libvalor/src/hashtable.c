@@ -43,7 +43,7 @@ hashtable_t *hashtbl_create(size_t capacity) {
     _tbl->base = (hashtable_node **) malloc(sizeof(hashtable_node * ) * capacity);
     _tbl->keys = array_create(1);
     _tbl->values = array_create(1);
-    bzero(_tbl->base, capacity * sizeof(hashtable_node *));
+    memset(_tbl->base, 0, capacity * sizeof(hashtable_node *));
     return _tbl;
 }
 

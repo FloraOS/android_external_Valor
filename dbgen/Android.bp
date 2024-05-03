@@ -1,4 +1,4 @@
-cc_binary {
+cc_binary_host {
     name: "dbgen",
     srcs: [
         "src/**/*.c"

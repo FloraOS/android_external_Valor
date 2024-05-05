@@ -16,8 +16,9 @@ typedef struct {
 } process_t;
 
 
-array_t *get_processes(uint32_t chunk_size);
+array_t *get_processes(void);
 void free_process_array(array_t* array);
+bool set_checksum(process_t *process, uint32_t chunk_size)
 
 #endif
 

@@ -8,6 +8,7 @@
 #include <errno.h>
 
 #include <valor/checksum.h>
+#include <valor/config.h>
 
 #include "aassert.h"
 #include "util.h"
@@ -16,14 +17,23 @@
 
 char *make_proc_path(char *dirname) {
     char *path = (char *) malloc((7 + strlen(dirname)) * sizeof(char));
+    cerror("malloc");
     strcpy(path, "/proc/");
     strcat(path, dirname);
     return path;
 }
 
+
+/**
+ * Set checksum for given process_t
+ * @param process pointer to process_t struct
+ * @param chunk_size size of chunk to calculate checksum
+ * @return whether checksum calculation was successful
+ */
 bool set_checksum(process_t *process, uint32_t chunk_size) {
     aassert(process);
     char *exe_path = (char *) malloc((5 + strlen(process->proc_path)) * sizeof(char));
+    cerror("malloc");
     strcpy(exe_path, process->proc_path);
     strcat(exe_path, "/exe");
     FILE *exe = fopen(exe_path, "r");
@@ -44,21 +54,24 @@ char *get_process_comm(const char *proc_path) {
     strcat(filename, "/cmdline");
     FILE *file = fopen(filename, "r");
     if (!file) {
+#if DEBUG
         error("Failed to open file: %s", filename);
+        perror("fopen");
+#endif
         free(filename);
         return NULL;
     }
 
     char *buffer = malloc(256 * sizeof(char));
     if (!buffer) {
-        cerror("Failed to allocate memory");
+        cerror("malloc");
         fclose(file);
         free(filename);
         return NULL;
     }
 
     if (fgets(buffer, 256, file) == NULL) {
-        debug("Failed to read from file: %s(%d: %s)", filename, errno, strerror(errno));
+        error("Failed to read from file: %s(%d: %s)", filename, errno, strerror(errno));
         fclose(file);
         free(buffer);
         free(filename);
@@ -85,7 +98,7 @@ void free_process(process_t *process) {
     }
 }
 
-process_t *get_process(char *dir_name, size_t chunk_size) {
+process_t *get_process(char *dir_name) {
     if (!is_int(dir_name)) {
         return NULL;
     }
@@ -93,15 +106,15 @@ process_t *get_process(char *dir_name, size_t chunk_size) {
     process->proc_path = make_proc_path(dir_name);
     process->comm = get_process_comm(process->proc_path);
     process->pid = atoi(dir_name);
-    if(!set_checksum(process, chunk_size)) {
-        free_process(process);
-        free(process);
-        return NULL;
-    }
     return process;
 }
 
-array_t *get_processes(uint32_t chunk_size) {
+/**
+ * Gets all processes without calculating their checksum
+ * @note Proccess checksums array is NULL
+ * @return array_t of type process_t
+ */
+array_t *get_processes(void) {
     struct dirent *_dirent;
     DIR *dir;
 
@@ -118,7 +131,7 @@ array_t *get_processes(uint32_t chunk_size) {
         if(!_dirent){
             break;
         }
-        process_t *process = get_process(_dirent->d_name, chunk_size);
+        process_t *process = get_process(_dirent->d_name);
 
         if(process != NULL) {
             array_add(processes, process);

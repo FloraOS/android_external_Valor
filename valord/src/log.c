@@ -12,6 +12,7 @@
 #include <stdio.h>
 #endif
 
+const char* MODNAME = "valord";
 
 void debug(const char *format, ...){
 #if DEBUG

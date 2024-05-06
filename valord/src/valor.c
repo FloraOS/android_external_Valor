@@ -14,7 +14,7 @@
 #include <unistd.h>
 
 
-const char *VERSION = "0.2.1";
+const char *VERSION = "0.2.2";
 const char *DB_FILE = "/system/etc/valor.db";
 const uint8_t IDLE_TIME = 3;
 
@@ -31,6 +31,10 @@ void sigterm_handler(int signum) {
 }
 
 float get_matching_k(database_t *db, array_t *chunk_checksums) {
+    if(chunk_checksums == NULL){
+        error("chunk_checksums is NULL");
+        return 0;
+    }
     size_t i = 0;
     size_t total_matches = 0;
     for (; i < chunk_checksums->sz; ++i) {
@@ -79,13 +83,15 @@ int main(void) {
                 }
             } else if(proc.comm != NULL) {
                 array_t* checksums = get_checksum(&proc, db->chunk_size);
-                float matching_k = get_matching_k(db, checksums);
-                array_free_with_base(checksums);
-                if (matching_k > 0.2f) {
-                    warn("Threat with PID %d is matching to database checksum on %.2f%%", matching_k * 100.0);
-                    kill(proc.pid, 9);
-                    if (!perror("kill")) {
-                        info("Sent signal 9 to %d", proc.pid);
+                if(checksums != NULL) {
+                    float matching_k = get_matching_k(db, checksums);
+                    array_free_with_base(checksums);
+                    if (matching_k > 0.2f) {
+                        warn("Threat with PID %d is matching to database checksum on %.2f%%", matching_k * 100.0);
+                        kill(proc.pid, 9);
+                        if (!perror("kill")) {
+                            info("Sent signal 9 to %d", proc.pid);
+                        }
                     }
                 }
             }

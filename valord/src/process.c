@@ -25,13 +25,14 @@ char *make_proc_path(char *dirname) {
 
 
 /**
- * Set checksum for given process_t
+ * Get checksum for given process_t
  * @param process pointer to process_t struct
  * @param chunk_size size of chunk to calculate checksum
- * @return whether checksum calculation was successful
+ * @return array of checksums or NULL
  */
-bool set_checksum(process_t *process, uint32_t chunk_size) {
+array_t* get_checksum(process_t *process, uint32_t chunk_size) {
     aassert(process);
+    reset_errors;
     char *exe_path = (char *) malloc((5 + strlen(process->proc_path)) * sizeof(char));
     cerror("malloc");
     strcpy(exe_path, process->proc_path);
@@ -39,12 +40,12 @@ bool set_checksum(process_t *process, uint32_t chunk_size) {
     FILE *exe = fopen(exe_path, "r");
     if (!exe) {
         free(exe_path);
-        return false;
+        return NULL;
     }
-    process->checksums = calculate_checksum_chunks(exe, chunk_size);
+    array_t* result = calculate_checksum_chunks(exe, chunk_size);
     fclose(exe);
     free(exe_path);
-    return true;
+    return result;
 }
 
 
@@ -93,9 +94,6 @@ char *get_process_comm(const char *proc_path) {
 void free_process(process_t *process) {
     free(process->comm);
     free(process->proc_path);
-    if (process->checksums != NULL) {
-        array_free_with_base(process->checksums);
-    }
 }
 
 process_t *get_process(char *dir_name) {
@@ -105,6 +103,11 @@ process_t *get_process(char *dir_name) {
     process_t *process = (process_t *) malloc(sizeof(process_t));
     process->proc_path = make_proc_path(dir_name);
     process->comm = get_process_comm(process->proc_path);
+    if(process->comm == NULL){
+        free(process->proc_path);
+        free(process);
+        return NULL;
+    }
     process->pid = atoi(dir_name);
     return process;
 }
@@ -115,6 +118,7 @@ process_t *get_process(char *dir_name) {
  * @return array_t of type process_t
  */
 array_t *get_processes(void) {
+    reset_errors;
     struct dirent *_dirent;
     DIR *dir;
 

@@ -12,13 +12,12 @@ typedef struct {
     pid_t pid;
     char *proc_path;
     char *comm;
-    array_t* checksums;
 } process_t;
 
 
 array_t *get_processes(void);
 void free_process_array(array_t* array);
-bool set_checksum(process_t *process, uint32_t chunk_size)
+array_t* get_checksum(process_t *process, uint32_t chunk_size);
 
 #endif
 

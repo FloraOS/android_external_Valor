@@ -4,15 +4,31 @@
 #include "util.h"
 
 #include <valor/db/db.h>
+#include <valor/array.h>
 #include <valor/config.h>
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdbool.h>
+#include <signal.h>
+#include <unistd.h>
 
 
-const char *VERSION = "0.2.0";
+const char *VERSION = "0.2.1";
 const char *DB_FILE = "/system/etc/valor.db";
 const uint8_t IDLE_TIME = 3;
+
+// This variable is setted to true when we are interrupted by SIGTERM
+volatile sig_atomic_t need_shutdown = 0;
+
+void sigterm_handler(int signum) {
+    if(signum != SIGTERM){
+        info("Received SIGTERM, setting shutdown flag");
+        need_shutdown = 1;
+    } else {
+        warn("Got unknown signal %d", signum);
+    }
+}
 
 float get_matching_k(database_t *db, array_t *chunk_checksums) {
     size_t i = 0;
@@ -27,7 +43,13 @@ float get_matching_k(database_t *db, array_t *chunk_checksums) {
 }
 
 int main(void) {
-    info("valord(%s, libvalor %s%s) is starting up...", VERSION, LIBVALOR_VERSION, DEBUG_STATUS_STR);
+    info("valord(version %s, libvalor %s%s) is starting up...", VERSION, LIBVALOR_VERSION, DEBUG_STATUS_STR);
+    // Register handler
+    if (signal(SIGTERM, sigterm_handler) == SIG_ERR) {
+        fatal("Can not register SIGTERM handler");
+        return -1;
+    }
+    // Load database
     database_t *db = (database_t *) malloc(sizeof(database_t));
     FILE * file = fopen(DB_FILE, "r");
     if (!file) {
@@ -42,18 +64,23 @@ int main(void) {
     size_t i;
 
     for (;;) {
+        if(need_shutdown){
+            break;
+        }
         array_t *processes = get_processes();
         for (i = 0; i < processes->sz; ++i) {
+            aassert(processes->base[i] != NULL);
             process_t proc = *(process_t *) processes->base[i];
-            if (database_check_name(db, proc.comm)) {
+            if (proc.comm != NULL && database_check_name(db, proc.comm)) {
                 warn("Detected threat by name %s", proc.comm);
                 kill(proc.pid, 9);
                 if (!perror("kill")) {
                     info("Sent signal 9 to %d", proc.pid);
                 }
-            } else {
-                set_checksum(&proc, db->chunk_size);
-                float matching_k = get_matching_k(db, proc.checksums);
+            } else if(proc.comm != NULL) {
+                array_t* checksums = get_checksum(&proc, db->chunk_size);
+                float matching_k = get_matching_k(db, checksums);
+                array_free_with_base(checksums);
                 if (matching_k > 0.2f) {
                     warn("Threat with PID %d is matching to database checksum on %.2f%%", matching_k * 100.0);
                     kill(proc.pid, 9);
@@ -66,4 +93,7 @@ int main(void) {
         free_process_array(processes);
         sleep(IDLE_TIME);
     }
+    info("Shutting down gracefully");
+    free_database(db);
+    return 0;
 }

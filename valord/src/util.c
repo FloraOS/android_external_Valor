@@ -28,8 +28,8 @@ bool is_int(char *str) {
 /**
  * Prints error to log. Does not exits from program
  * @param _name name of call where error may occur
- * @param _file name of file of perror call(passed by macro)
- * @param _line number of line of perror call(passed by macro)
+ * @param _file name of file of valor_perror call(passed by macro)
+ * @param _line number of line of valor_perror call(passed by macro)
  * @return whether there was an error
  */
 bool perror_internal(const char *_name, const char *_file, int _line) {

@@ -14,7 +14,7 @@
 #include <unistd.h>
 
 
-const char *VERSION = "0.2.3";
+const char *VERSION = "0.2.4";
 const char *DB_FILE = "/system/etc/valor.db";
 const uint8_t IDLE_TIME = 3;
 
@@ -79,7 +79,7 @@ int main(void) {
                 warn("Detected threat by name %s", proc.comm);
                 reset_errors;
                 kill(proc.pid, 9);
-                if (!perror("kill")) {
+                if (!valor_perror("kill")) {
                     info("Sent signal 9 to %d", proc.pid);
                 }
             } else if(proc.comm != NULL) {
@@ -91,7 +91,7 @@ int main(void) {
                         warn("Threat with PID %d is matching to database checksum on %.2f%%", matching_k * 100.0);
                         reset_errors;
                         kill(proc.pid, 9);
-                        if (!perror("kill")) {
+                        if (!valor_perror("kill")) {
                             info("Sent signal 9 to %d", proc.pid);
                         }
                     }

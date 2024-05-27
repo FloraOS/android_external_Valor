@@ -16,6 +16,7 @@
 
 
 char *make_proc_path(char *dirname) {
+    reset_errors;
     char *path = (char *) malloc((7 + strlen(dirname)) * sizeof(char));
     cerror("malloc");
     strcpy(path, "/proc/");
@@ -57,7 +58,7 @@ char *get_process_comm(const char *proc_path) {
     if (!file) {
 #if DEBUG
         error("Failed to open file: %s", filename);
-        perror("fopen");
+        valor_perror("fopen");
 #endif
         free(filename);
         return NULL;

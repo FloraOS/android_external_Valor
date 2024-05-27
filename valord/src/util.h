@@ -12,7 +12,7 @@
  * @note Resets global errno variable to 0 after execution
  * @return whether there was an error
  */
-#define perror(c) perror_internal(c, __FILE__, __LINE__)
+#define valor_perror(c) perror_internal(c, __FILE__, __LINE__)
 
 /**
  * Resets last error

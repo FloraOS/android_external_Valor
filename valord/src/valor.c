@@ -3,6 +3,8 @@
 #include "log.h"
 #include "util.h"
 
+#include <fuzzy.h>
+
 #include <valor/db/db.h>
 #include <valor/array.h>
 #include <valor/config.h>
@@ -14,9 +16,10 @@
 #include <unistd.h>
 
 
-const char *VERSION = "0.2.4";
+const char *VERSION = "0.2.5";
 const char *DB_FILE = "/system/etc/valor.db";
 const uint8_t IDLE_TIME = 3;
+const ssize_t MATCH_THRESHOLD = 20; // minimum distance from threat on which process is not considered as threat
 
 // This variable is setted to true when we are interrupted by SIGTERM
 volatile sig_atomic_t need_shutdown = 0;
@@ -28,22 +31,6 @@ void sigterm_handler(int signum) {
     } else {
         warn("Got unknown signal %d", signum);
     }
-}
-
-float get_matching_k(database_t *db, array_t *chunk_checksums) {
-    if(chunk_checksums == NULL){
-        error("chunk_checksums is NULL");
-        return 0;
-    }
-    size_t i = 0;
-    size_t total_matches = 0;
-    for (; i < chunk_checksums->sz; ++i) {
-        checksum_t *chksum = (checksum_t *) chunk_checksums->base[i];
-        if (database_check_chunk(db, *chksum)) {
-            ++total_matches;
-        }
-    }
-    return (float) total_matches / (float) chunk_checksums->sz;
 }
 
 int main(void) {
@@ -83,12 +70,12 @@ int main(void) {
                     info("Sent signal 9 to %d", proc.pid);
                 }
             } else if(proc.comm != NULL) {
-                array_t* checksums = get_checksum(&proc, db->chunk_size);
-                if(checksums != NULL) {
-                    float matching_k = get_matching_k(db, checksums);
-                    array_free_with_base(checksums);
-                    if (matching_k > 0.2f) {
-                        warn("Threat with PID %d is matching to database checksum on %.2f%%", matching_k * 100.0);
+                fuzzy_hash_t hash;
+                int result = fuzzy_hash_file(file, hash);
+                if(!result) {
+                    ssize_t score = database_check_hash(db, hash);
+                    if (score < MATCH_THRESHOLD) {
+                        warn("Threat with PID %d has score %zd", score);
                         reset_errors;
                         kill(proc.pid, 9);
                         if (!valor_perror("kill")) {

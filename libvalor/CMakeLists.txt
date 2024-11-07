@@ -3,19 +3,28 @@ project(libvalor)
 
 # libvalor base
 add_library(valor STATIC
-        src/checksum.c
         src/db/db.c
         src/crc32/crc32.c
         src/crc32/crc_poly.c
         src/array.c
         src/hashtable.c
         src/hashset.c
+        src/ed_tree.c
 )
+
+# External libraries
+find_library(FUZZY_LIB fuzzy REQUIRED)
+find_path(FUZZY_INCLUDE_DIR fuzzy.h REQUIRED)
 
 target_include_directories(valor PUBLIC
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
         $<INSTALL_INTERFACE:include>
 )
+
+
+
+target_include_directories(valor PRIVATE ${FUZZY_INCLUDE_DIR})
+target_link_libraries(valor PRIVATE ${FUZZY_LIB})
 
 # Tests
 enable_testing()

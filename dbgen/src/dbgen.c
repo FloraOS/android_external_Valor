@@ -1,9 +1,10 @@
 #include "arguments.h"
 #include "message.h"
 
+#include <fuzzy.h>
+
 #include <valor/config.h>
 #include <valor/db/db.h>
-#include <valor/checksum.h>
 
 #include <stdio.h>
 #include <string.h>
@@ -14,11 +15,10 @@
 int main(int argc, const char *argv[]) {
     arguments_begin();
     set_loglevel(LVL_FULL);
+    arguments_set_usage("--db FILE [-h|--help] [--check-entry|--increment-version|--add-name NAME|--check-name NAME|--add-threat FILE|--check-threat FILE|--set-version VERSION]");
     argument_add_compulsory("--db", "Path to database file", ARG_STR);
     argument_add("--capacity", "Capacity to pre-allocate in database structures", ARG_INT,
                  (argvalue)(int64_t)1, true, false);
-    argument_add("--chunk-size", "Chunk size to calculate fingerprints of threat(in bytes)", ARG_INT,
-                 (argvalue)(int64_t)(1024 * 1024), true, false);
     argument_add("--filename", "Threat file", ARG_STR, (argvalue) NULL,
                  false, false);
     argument_add("--check-entry", "Check whether file in database and exit.", ARG_BOOL,
@@ -59,14 +59,10 @@ int main(int argc, const char *argv[]) {
             die("fopen: %s(%d)", strerror(errno), errno);
         }
         int64_t capacity = argument_get("--capacity")->value.intValue;
-        int64_t chunk_size = argument_get("--chunk-size")->value.intValue;
-        if(chunk_size <= 0){
-            die("Invalid chunk size");
-        }
         if(capacity < 0){
             die("Invalid capacity");
         }
-        db = create_database(capacity, chunk_size);
+        db = create_database(capacity);
         fclose(db_file);
     }
 
@@ -91,15 +87,14 @@ int main(int argc, const char *argv[]) {
         if(!file){
             die("Can not open %s for reading", fname);
         }
-        array_t* checksums = calculate_checksum_chunks(file, db->chunk_size);
-        info("Got %d checksums", checksums->sz);
-        database_add_checksums(db, checksums);
-        success("Added checksums successfully");
-        size_t i = 0;
-        for(; i< checksums->sz; ++i){
-            free(checksums->base[i]);
+        fuzzy_hash_t hash;
+        int result = fuzzy_hash_file(file, hash);
+        if(result){
+          die("Can not hash file: %d", result);
         }
-        array_free(checksums);
+        database_add_hash(db, hash);
+        info("Storing hash: %s", hash);
+        success("Added hash successfully");
     }
 
     if(argument_check("--check-threat")){
@@ -108,18 +103,14 @@ int main(int argc, const char *argv[]) {
         if(!file){
             die("Can not open %s for reading", fname);
         }
-        array_t* checksums = calculate_checksum_chunks(file, db->chunk_size);
-        info("Got %d checksums", checksums->sz);
-        size_t total_matched = 0;
-        size_t i = 0;
-        for(; i < checksums->sz; ++i){
-            checksum_t *checksum_ptr = (checksum_t*)checksums->base[i];
-            if(database_check_chunk(db, *checksum_ptr)){
-                ++total_matched;
-            }
+
+        fuzzy_hash_t hash;
+        int result = fuzzy_hash_file(file, hash);
+        if(result){
+            die("Can not hash file: %d", result);
         }
-        success("Checked file %s. Matched %.2f%% checksums.", fname,
-                100.0 * (float)total_matched / (float)checksums->sz);
+        info("Checking hash: %s", hash);
+        info("Score: %llu", database_check_hash(db, hash));
     }
 
     if(argument_get("--increment-version")->value.boolValue){

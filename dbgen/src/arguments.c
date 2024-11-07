@@ -7,12 +7,16 @@
 #include <valor/config.h>
 
 hashtable_t *arguments = NULL;
-char *usage = NULL;
+const char *usage = NULL;
 
 
 void arguments_begin(void) {
     arguments = hashtbl_create(HASHTBL_CAPACITY);
     argument_add("--help", "Show help message.", ARG_BOOL, argbool(false), false, true);
+}
+
+void arguments_set_usage(const char* new_usage){
+    usage = new_usage;
 }
 
 bool _argcheck(char *name) {
@@ -134,7 +138,7 @@ void arguments_parse(int argc, const char *argv[], int start) {
         if (argument->type == ARG_BOOL) {
             argument->value = argbool(true);
             if (argument->values) {
-                die("Programming error:%s:Bad argument: bool arrays are not supported(%s:%d)", __FUNCTION__, __FILE__,
+                die("Programming error: %s: Bad argument: bool arrays are not supported(%s:%d)", __FUNCTION__, __FILE__,
                     __LINE__);
             }
             argument->is_set = true;
@@ -188,7 +192,7 @@ void arguments_help(const char *progname) {
     /* Shows help for an prgoram
        progname – name of program(ususally argv[0])*/
     if (!usage) {
-        warn("Programming warning:usage is unset(%s:%d)", __FILE__, __LINE__);
+        warn("Programming warning: usage is unset(%s:%d)", __FILE__, __LINE__);
     }
     size_t i = 0;
     info("Usage: %s %s", progname, usage);

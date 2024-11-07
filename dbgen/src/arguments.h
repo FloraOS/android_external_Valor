@@ -38,6 +38,8 @@ extern hashtable_t *arguments;
 
 void arguments_begin(void);
 
+void arguments_set_usage(const char* usage);
+
 argument_t *
 argument_create(char *name, char *description, argtype type, bool compulsory, argvalue _default, bool has_default_value,
                 bool is_help, bool array);

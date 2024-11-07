@@ -10,4 +10,4 @@ set(ANDROID_NDK /opt/android-ndk)
 
 add_subdirectory(libvalor)
 add_subdirectory(dbgen)
-add_subdirectory(valord)
+#add_subdirectory(valord)

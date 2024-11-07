@@ -4,8 +4,8 @@ cc_binary_host {
         "src/**/*.c"
     ],
     local_include_dirs: ["."],
-    include_dirs: ["external/Valor/libvalor/include"],
-    static_libs: ["libvalor_host"],
+    include_dirs: ["external/Valor/libvalor/include", "external/ssdeep/include"],
+    static_libs: ["libvalor_host", "libfuzzy_host"],
     cflags: ["-Wall", "-Wextra"],
     target: {
         host: {

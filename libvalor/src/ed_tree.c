@@ -50,7 +50,7 @@ void edt_insert_string(ed_tree_t* tree, const char* string){
   for(; i < tree->depth; ++i){
     assert(last_node);
     //printf("node=%c has neighbor at %c\n", last_node->data, string[i]);
-    last_node->has_neighbor_at[string[i]] = true;
+    last_node->has_neighbor_at[(int)string[i]] = true;
     last_node = last_node->next;
   }
 }
@@ -61,7 +61,7 @@ ssize_t edt_get_distance_to_existing(ed_tree_t* tree, const char* string){
   ed_tree_node_t* last_node = tree->root;
   for(; i < tree->depth; ++i){
     assert(last_node);
-    if(last_node->data != string[i] && !last_node->has_neighbor_at[string[i]]){
+    if(last_node->data != string[i] && !last_node->has_neighbor_at[(int)string[i]]){
       //printf("node data=%c, string[i] = %c\n", last_node->data, string[i]);
       ++distance;
     }

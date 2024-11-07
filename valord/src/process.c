@@ -7,7 +7,6 @@
 #include <dirent.h>
 #include <errno.h>
 
-#include <valor/checksum.h>
 #include <valor/config.h>
 
 #include "aassert.h"
@@ -23,32 +22,6 @@ char *make_proc_path(char *dirname) {
     strcat(path, dirname);
     return path;
 }
-
-
-/**
- * Get checksum for given process_t
- * @param process pointer to process_t struct
- * @param chunk_size size of chunk to calculate checksum
- * @return array of checksums or NULL
- */
-array_t* get_checksum(process_t *process, uint32_t chunk_size) {
-    aassert(process);
-    reset_errors;
-    char *exe_path = (char *) malloc((5 + strlen(process->proc_path)) * sizeof(char));
-    cerror("malloc");
-    strcpy(exe_path, process->proc_path);
-    strcat(exe_path, "/exe");
-    FILE *exe = fopen(exe_path, "r");
-    if (!exe) {
-        free(exe_path);
-        return NULL;
-    }
-    array_t* result = calculate_checksum_chunks(exe, chunk_size);
-    fclose(exe);
-    free(exe_path);
-    return result;
-}
-
 
 char *get_process_comm(const char *proc_path) {
     char *filename = (char *) malloc(sizeof(char) * (strlen(proc_path) + 8));

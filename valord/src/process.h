@@ -6,7 +6,7 @@
 #include <sys/types.h>
 #include <unistd.h>
 
-#include <valor/checksum.h>
+#include <valor/array.h>
 
 typedef struct {
     pid_t pid;
@@ -17,7 +17,6 @@ typedef struct {
 
 array_t *get_processes(void);
 void free_process_array(array_t* array);
-array_t* get_checksum(process_t *process, uint32_t chunk_size);
 
 #endif
 

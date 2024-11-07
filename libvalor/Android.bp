@@ -2,6 +2,8 @@ cc_library {
     name: "libvalor",
     srcs: ["src/**/*.c"],
     local_include_dirs: ["include"],
+    include_dirs: ["external/ssdeep/include"],
+    static_libs: ["libfuzzy"],
 
     target: {
        host: {
@@ -14,6 +16,8 @@ cc_library_host_static {
     name: "libvalor_host",
     srcs: ["src/**/*.c"],
     local_include_dirs: ["include"],
+    include_dirs: ["external/ssdeep/include"],
+    static_libs: ["libfuzzy_host"],
 
     target: {
        host: {

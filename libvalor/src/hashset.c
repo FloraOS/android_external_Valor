@@ -4,7 +4,7 @@
 #include <string.h>
 #include <assert.h>
 
-unsigned long hash_djb2(const unsigned char *str) //djb2 hash by Dan Bernstein
+static unsigned long hash_djb2(const unsigned char *str) //djb2 hash by Dan Bernstein
 {
     unsigned long hash = 5381;
     int c;
@@ -104,6 +104,8 @@ stringset_t* create_stringset(uint32_t capacity){
 
 
 void stringset_add(stringset_t* set, const char* str){
+    assert(set);
+    assert(str);
     uint32_t hash = hash_djb2((unsigned char*) str);
     assert(set->capacity > 0);
     uint32_t index = hash % set->capacity;
@@ -126,6 +128,8 @@ void stringset_add(stringset_t* set, const char* str){
 }
 
 bool stringset_check(stringset_t* set, const char* str){
+    assert(set);
+    assert(str);
     uint32_t hash = hash_djb2((unsigned char*) str);
     uint32_t index = hash % set->capacity;
     stringset_node_t* current_node = set->node_table[index];

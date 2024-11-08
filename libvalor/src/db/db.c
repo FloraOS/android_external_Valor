@@ -60,6 +60,7 @@ void database_add_name(database_t *db, const char *name) {
 }
 
 bool database_check_name(database_t *db, const char *name) {
+    assert(db);
     if(name == NULL){
         fprintf(stderr, "Name passed to database_check_name is NULL!");
         return false;
@@ -69,7 +70,6 @@ bool database_check_name(database_t *db, const char *name) {
 
 void database_save(FILE *file, database_t *db) {
     size_t i = 0;
-    //printf("database_save: entered\n");
     // Write metadata
     fwrite(&db->version, sizeof(db->version), 1, file);
     fwrite(&db->modulo, sizeof(db->modulo), 1, file);
@@ -82,10 +82,8 @@ void database_save(FILE *file, database_t *db) {
         fwrite(str, sizeof(char), len, file);
     }
     // Write hashtree
-    //printf("Writing hashtree\n");
     uint64_t tree_sz = tree_size(db->hash_tree);
     uint8_t* serialized_tree = serialize_ed_tree(db->hash_tree);
-    //printf("Serialize OK\n");
     fwrite(serialized_tree, sizeof(uint8_t) * tree_sz, 1, file);
     // Clean-up
     free(serialized_tree);
@@ -111,6 +109,7 @@ void database_read(FILE *file, database_t *db) {
         str[len] = (char) 0;
         fread(str, sizeof(char), len, file);
         database_add_name(db, str);
+	free(str); // String copied in add_name, so we do not need anymore
     }
     // Read hashtree
     uint8_t* serialized_tree = (uint8_t*)malloc(sizeof(uint8_t) * tree_size_for_depth(FUZZY_MAX_RESULT));

@@ -18,7 +18,7 @@ int main(int argc, const char *argv[]) {
     arguments_set_usage("--db FILE [-h|--help] [--check-entry|--increment-version|--add-name NAME|--check-name NAME|--add-threat FILE|--check-threat FILE|--set-version VERSION]");
     argument_add_compulsory("--db", "Path to database file", ARG_STR);
     argument_add("--capacity", "Capacity to pre-allocate in database structures", ARG_INT,
-                 (argvalue)(int64_t)1, true, false);
+                 (argvalue)(int64_t)128, true, false);
     argument_add("--filename", "Threat file", ARG_STR, (argvalue) NULL,
                  false, false);
     argument_add("--check-entry", "Check whether file in database and exit.", ARG_BOOL,
@@ -62,6 +62,9 @@ int main(int argc, const char *argv[]) {
         if(capacity < 0){
             die("Invalid capacity");
         }
+	if(capacity < 16){
+	    warning("Capacity is too small. This may lead to performance and stability issues");
+	}
         db = create_database(capacity);
         fclose(db_file);
     }

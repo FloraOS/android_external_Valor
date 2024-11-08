@@ -63,7 +63,7 @@ int main(int argc, const char *argv[]) {
             die("Invalid capacity");
         }
 	if(capacity < 16){
-	    warning("Capacity is too small. This may lead to performance and stability issues");
+	    warn("Capacity is too small. This may lead to performance and stability issues");
 	}
         db = create_database(capacity);
         fclose(db_file);

@@ -24,7 +24,7 @@ char *make_proc_path(char *dirname) {
 }
 
 char *get_process_comm(const char *proc_path) {
-    char *filename = (char *) malloc(sizeof(char) * (strlen(proc_path) + 8));
+    char *filename = (char *) malloc(sizeof(char) * (strlen(proc_path) + 9));
     strcpy(filename, proc_path);
     strcat(filename, "/cmdline");
     FILE *file = fopen(filename, "r");
@@ -46,8 +46,11 @@ char *get_process_comm(const char *proc_path) {
     }
 
     if (fgets(buffer, 256, file) == NULL) {
+#if DEBUG
         error("Failed to read from file: %s(%d: %s)", filename, errno, strerror(errno));
-        fclose(file);
+        error("ferror: %d", ferror(file));
+#endif
+	fclose(file);
         free(buffer);
         free(filename);
         return NULL;
@@ -65,9 +68,22 @@ char *get_process_comm(const char *proc_path) {
     return buffer;
 }
 
+/**
+ * Frees process_t internal substructures.
+ * @note header is freed separately
+ * @param process_t process to free
+ */
 void free_process(process_t *process) {
     free(process->comm);
     free(process->proc_path);
+    free(process->exe);
+}
+
+char* get_process_exe(const char* proc_path){
+    char* exe = (char*)malloc((strlen(proc_path) + 4) * sizeof(char));
+    strcpy(exe, proc_path);
+    strcat(exe, "/exe");
+    return exe;
 }
 
 process_t *get_process(char *dir_name) {
@@ -76,10 +92,12 @@ process_t *get_process(char *dir_name) {
     }
     process_t *process = (process_t *) malloc(sizeof(process_t));
     process->proc_path = make_proc_path(dir_name);
+    process->exe = get_process_exe(process->proc_path);
     process->comm = get_process_comm(process->proc_path);
     if(process->comm == NULL){
         free(process->proc_path);
-        free(process);
+        free(process->exe);
+	free(process);
         return NULL;
     }
     process->pid = atoi(dir_name);
@@ -97,7 +115,6 @@ array_t *get_processes(void) {
     DIR *dir;
 
     array_t *processes = array_create(128);
-    //size_t i = 0;
 
     dir = opendir("/proc");
     if (!dir) {

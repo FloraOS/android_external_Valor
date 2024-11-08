@@ -12,6 +12,7 @@ typedef struct {
     pid_t pid;
     char *proc_path;
     char *comm;
+    char *exe;
 } process_t;
 
 

@@ -53,6 +53,7 @@ int main(void) {
     info("Loaded database version %d from %s", db->version, DB_FILE);
 
     size_t i;
+    fuzzy_hash_t hash;
 
     for (;;) {
         if(need_shutdown){
@@ -70,12 +71,12 @@ int main(void) {
                     info("Sent signal 9 to %d", proc.pid);
                 }
             } else if(proc.comm != NULL) {
-                fuzzy_hash_t hash;
-                int result = fuzzy_hash_file(file, hash);
+                int result = fuzzy_hash_filename(proc.exe, hash);
                 if(!result) {
                     ssize_t score = database_check_hash(db, hash);
+		    debug("hash=%s,score=%zd", hash, score);
                     if (score < MATCH_THRESHOLD) {
-                        warn("Threat with PID %d has score %zd", score);
+                        warn("Threat with PID %d has score %zd", proc.pid, score);
                         reset_errors;
                         kill(proc.pid, 9);
                         if (!valor_perror("kill")) {

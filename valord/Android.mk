@@ -23,7 +23,6 @@ LOCAL_STATIC_LIBRARIES := libvalor \
 			  libfuzzy
 
 LOCAL_REQUIRED_MODULES := \
-	valor.db \
 	valord.rc
 
 include $(BUILD_EXECUTABLE)
